@@ -86,105 +86,109 @@ export default function SearchComponent() {
         onClick={() => searchContainerClicked()}
         id="search-container"
       >
-        <div
-          ref={searchBarRef}
-          className={`search-bar ${clicked ? "clicked" : ""}`}
-        >
+        <a href="#search-bar" className="search-bar-navigate">
           <div
-            className={`destination-div search-bar-div ${
-              clicked === "destination" ? "clicked" : ""
-            }`}
-            onClick={() => handleClick("destination")}
-          >
-            <span className="search-title">Where</span>
-            <span className="search-span destination-span">
-              {locationName ? locationName : "Search destination"}
-            </span>
-            {clicked === "destination" ? (
-              <div className="map-comp-div">
-                <MapCompo setLocationName={setLocationName} />
-              </div>
-            ) : null}
-          </div>
-
-          {/* Date Selection */}
-          <div className="book-date-div">
-            <div
-              className={`checkin-div date-div ${
-                clicked === "checkin" ? "clicked" : ""
-              }`}
-              onClick={() => handleClick("checkin")}
-            >
-              <span className="search-title">Check in</span>
-              <span className="search-span checkin-date-span">
-                {format(range[0].startDate, "MM/dd/yyyy")}
-              </span>
-            </div>
-            <div
-              className={`checkout-div date-div ${
-                clicked === "checkout" ? "clicked" : ""
-              }`}
-              onClick={() => handleClick("checkout")}
-            >
-              <span className="search-title">Check out</span>
-              <span className="search-span checkout-date-span">
-                {format(range[0].endDate, "MM/dd/yyyy")}
-              </span>
-            </div>
-            {clicked === "checkin" || clicked === "checkout" ? (
-              <div className="date-picker">
-                <DateRangePickerComp
-                  range={range}
-                  setRange={setRange}
-                  onClose={handleClose}
-                />
-              </div>
-            ) : null}
-          </div>
-
-          {/* Guest Selection and Search */}
-          <div
-            className={`search-div search-bar-div ${
-              clicked === "search-outer-div" ? "clicked" : ""
-            }`}
+            ref={searchBarRef}
+            className={`search-bar ${clicked ? "clicked" : ""}`}
+            id="search-bar"
           >
             <div
-              className={`search-outer-div`}
-              onClick={() => handleClick("search-outer-div")}
+              className={`destination-div search-bar-div ${
+                clicked === "destination" ? "clicked" : ""
+              }`}
+              onClick={() => handleClick("destination")}
             >
-              <div className="search-inner-div">
-                <span className="search-title">Who</span>
-                {/* Updated logic to display total guests */}
-                <span className="search-span add-guest-span">
-                  {totalGuest === 0
-                    ? "Add guest"
-                    : `${totalGuest} guest${totalGuest > 1 ? "s" : ""}`}
-                </span>
-              </div>
-              <div className={`search-area ${clicked ? "expanded" : ""}`}>
-                <Search className="search-icon" />
-                <span
-                  className={`search-text ${clicked ? "clicked" : ""}`}
-                  onClick={search}
-                >
-                  Search
-                </span>
-              </div>
+              <span className="search-title">Where</span>
+              <span className="search-span destination-span">
+                {locationName ? locationName : "Search destination"}
+              </span>
+              {clicked === "destination" ? (
+                <div className="map-comp-div">
+                  <MapCompo setLocationName={setLocationName} />
+                </div>
+              ) : null}
             </div>
 
-            {/* Add Guest Component */}
-            {clicked === "search-outer-div" ? (
+            {/* Date Selection */}
+            <div className="book-date-div">
               <div
-                className={`add-guest-div ${
-                  clicked === "search-outer-div" ? "clicked" : ""
+                className={`checkin-div date-div ${
+                  clicked === "checkin" ? "clicked" : ""
                 }`}
-                ref={addGuestRef}
+                onClick={() => handleClick("checkin")}
               >
-                <AddGuest setTotalGuest={setTotalGuest} />
+                <span className="search-title">Check in</span>
+                <span className="search-span checkin-date-span">
+                  {format(range[0].startDate, "MM/dd/yyyy")}
+                </span>
               </div>
-            ) : null}
+              <div
+                className={`checkout-div date-div ${
+                  clicked === "checkout" ? "clicked" : ""
+                }`}
+                onClick={() => handleClick("checkout")}
+              >
+                <span className="search-title">Check out</span>
+                <span className="search-span checkout-date-span">
+                  {format(range[0].endDate, "MM/dd/yyyy")}
+                </span>
+              </div>
+              {clicked === "checkin" || clicked === "checkout" ? (
+                <div className="date-picker">
+                  <DateRangePickerComp
+                    range={range}
+                    setRange={setRange}
+                    onClose={handleClose}
+                    disablePreviousDates={true}
+                  />
+                </div>
+              ) : null}
+            </div>
+
+            {/* Guest Selection and Search */}
+            <div
+              className={`search-div search-bar-div ${
+                clicked === "search-outer-div" ? "clicked" : ""
+              }`}
+            >
+              <div
+                className={`search-outer-div`}
+                onClick={() => handleClick("search-outer-div")}
+              >
+                <div className="search-inner-div">
+                  <span className="search-title">Who</span>
+                  {/* Updated logic to display total guests */}
+                  <span className="search-span add-guest-span">
+                    {totalGuest === 0
+                      ? "Add guest"
+                      : `${totalGuest} guest${totalGuest > 1 ? "s" : ""}`}
+                  </span>
+                </div>
+                <div className={`search-area ${clicked ? "expanded" : ""}`}>
+                  <Search className="search-icon" />
+                  <span
+                    className={`search-text ${clicked ? "clicked" : ""}`}
+                    onClick={search}
+                  >
+                    Search
+                  </span>
+                </div>
+              </div>
+
+              {/* Add Guest Component */}
+              {clicked === "search-outer-div" ? (
+                <div
+                  className={`add-guest-div ${
+                    clicked === "search-outer-div" ? "clicked" : ""
+                  }`}
+                  ref={addGuestRef}
+                >
+                  <AddGuest setTotalGuest={setTotalGuest} />
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   );

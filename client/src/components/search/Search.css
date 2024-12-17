@@ -5,6 +5,11 @@
   /* position: absolute; */
 }
 
+.search-bar-navigate {
+  text-decoration: none;
+  color: inherit;
+}
+
 .search-bar {
   margin: 40px;
   box-shadow: 0 0 10px 3px var(--search-bar-box-shadow-color);

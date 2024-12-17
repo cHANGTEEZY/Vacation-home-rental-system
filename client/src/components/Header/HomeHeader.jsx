@@ -159,9 +159,7 @@ export default function HomeHeader() {
             Experience Best Nepal <br /> Has To Offer
           </h1>
           <div>
-            <a href="#search-bar" id="search-bar">
-              <SearchComponent />
-            </a>
+            <SearchComponent />
           </div>
         </div>
       </div>
