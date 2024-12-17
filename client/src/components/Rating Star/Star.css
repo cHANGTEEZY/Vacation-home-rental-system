@@ -1,0 +1,22 @@
+.star-rating-div {
+  display: grid;
+  align-items: center;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.star {
+  cursor: pointer;
+  transition: fill 200ms;
+}
+
+.rating-description {
+  margin-left: 10px;
+  font-weight: bold;
+  font-family: var(--primary-font);
+  font-weight: 500;
+  font-size: 1.42rem;
+  height: 3rem;
+}

@@ -1,0 +1,132 @@
+/* Signup.css */
+
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.signup-content {
+  /* flex: 1; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.form-wrapper {
+  display: flex;
+  border: 2px solid grey;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all ease-in 200ms;
+  font-family: var(--primary-font);
+  height: 580px;
+  width: 450px;
+}
+
+.form-logo {
+  display: flex;
+  justify-content: start;
+  /* border: 1px solid red; */
+  position: relative;
+  top: 1%;
+  left: -5%;
+  img {
+    height: 5rem;
+    object-fit: contain;
+  }
+}
+
+.form-side {
+  height: 560px;
+  border-left: 1px solid;
+  width: 410px;
+  background: rgb(64, 179, 45);
+  background: linear-gradient(
+    5deg,
+    rgba(64, 179, 45, 0.27074579831932777) 0%,
+    rgba(9, 121, 66, 0.6432948179271709) 25%,
+    rgba(44, 190, 39, 0.5956757703081232) 100%
+  );
+  margin-right: 10px;
+  border-radius: var(--card-border-radius);
+  border: none;
+}
+
+.form-header {
+  h1 {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  span {
+    font-size: 0.81rem;
+    color: grey;
+    text-wrap: wrap;
+  }
+  margin-bottom: 40px;
+  width: 20rem;
+}
+
+.form-group {
+  display: grid;
+  margin-bottom: 0.62rem;
+  label {
+    font-size: 0.8rem;
+  }
+  input {
+    padding: 0.4rem 0;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    width: 18rem;
+    border: 1px solid hsl(0, 0%, 90%);
+    text-indent: 0.7rem;
+  }
+}
+
+.form-group input:focus {
+  outline: none;
+}
+
+.footer-position {
+  margin-top: auto;
+}
+
+.form-footer {
+  margin-top: 20px;
+  display: grid;
+
+  .submit-button {
+    margin: 10px 0;
+    border: none;
+    width: 18rem;
+    background-color: rgb(19, 135, 96);
+    padding: 0.8rem 0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: #efeded;
+    font-size: 0.8rem;
+  }
+
+  .form-footer-span {
+    text-align: center;
+    font-size: 0.8rem;
+    color: grey;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}

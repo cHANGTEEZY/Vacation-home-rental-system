@@ -1,0 +1,129 @@
+.booking-component-container {
+  width: 100%; /* Set to full width and use max-width for responsiveness */
+  max-width: 1300px;
+  margin: 0 auto;
+  font-family: var(--primary-font);
+}
+
+.booking-component-header h1 {
+  font-size: 2.03rem;
+  font-weight: 550;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgb(219, 217, 217);
+  padding-bottom: 1rem;
+}
+
+.booking-data {
+  border-bottom: 1px solid rgb(219, 217, 217);
+  padding-bottom: 2.8rem;
+  h2 {
+    font-weight: 450;
+  }
+  p {
+    font-weight: 400;
+  }
+  button {
+    padding: 1rem 1.7rem;
+    border: 1px solid black;
+    border-radius: 0.8rem;
+    background-color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: all ease 150ms;
+    &:hover {
+      cursor: pointer;
+      background-color: black;
+      color: white;
+    }
+  }
+}
+
+.cant-find-booking {
+  margin-top: 1.22rem;
+  font-size: 0.912rem;
+  span {
+    text-decoration: underline;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+/* Adjusted booked-property-card-css */
+
+.booked-property-container {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.delete-booking-list {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  color: red;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+}
+
+.booking-delete-disabled {
+  cursor: not-allowed;
+  color: grey;
+}
+
+.booked-property-title {
+  position: absolute;
+  top: -10%;
+  font-weight: 550;
+}
+
+.booked-property-div {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid rgb(212, 211, 211);
+}
+
+.booked-property-image-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 images in a row */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows for a total of 8 images */
+  gap: 5px; /* Small gap between the images */
+  max-width: 50rem; /* Restrict the maximum width */
+}
+
+.property-image-div-grid-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.property-details {
+  margin-left: 2rem;
+  flex-grow: 1;
+  h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+.give-review-button {
+  padding: 1rem 2rem;
+  margin-top: 3rem;
+  border-radius: 0.8rem;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.give-review-button.reviewable {
+  background-color: green;
+  color: rgb(255, 254, 254);
+}
+.give-review-button.not-reviewable {
+  cursor: not-allowed;
+}

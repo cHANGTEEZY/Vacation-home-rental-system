@@ -1,0 +1,79 @@
+.review-section-header-div {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto 3rem auto;
+  font-family: var(--primary-font);
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+  }
+  p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: rgb(101, 100, 99);
+  }
+}
+
+.review-main-section {
+  max-width: 1300px;
+  width: 100%;
+  margin: 3rem auto;
+  gap: 40px;
+  font-family: var(--primary-font);
+}
+
+.review-main-section {
+  display: flex;
+}
+
+.review-property {
+  img {
+    height: 24rem;
+    object-fit: contain;
+    border-radius: 1.3rem;
+  }
+
+  p {
+    font-size: 1.42rem;
+    font-weight: 500;
+  }
+}
+
+.write-a-review-message {
+  width: 25rem;
+  height: 10rem;
+  border: 1px solid rgb(202, 199, 199);
+  font-size: 0.9rem;
+  padding: 1rem;
+  border-radius: 0.8rem;
+}
+
+.review-div-header {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.review-text-area-header {
+  font-size: 0.9rem;
+  font-weight: 450;
+  margin-top: 1rem;
+}
+
+.review-div {
+  display: grid;
+  button {
+    margin-top: 1rem;
+    padding: 1rem 0;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    /* background-color: white; */
+    cursor: pointer;
+    transition: all ease 200ms;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+}

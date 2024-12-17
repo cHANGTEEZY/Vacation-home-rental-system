@@ -1,0 +1,254 @@
+/* header-section */
+
+.listing-header {
+  width: 100%;
+  max-width: 2500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+}
+
+.listing-header img {
+  height: 2em;
+  object-fit: contain;
+}
+
+.listing-header button {
+  padding: 1rem 1.4rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(113, 112, 112);
+  background-color: white;
+  cursor: pointer;
+  transition: all ease-in 100ms;
+}
+
+.listing-header button:hover {
+  background-color: black;
+  color: white;
+}
+
+/* listing-section */
+.listing-form {
+  margin-bottom: 4rem;
+}
+
+.listing-form-group {
+  width: 700px;
+  margin: 1rem auto;
+}
+
+.listing-form-header {
+  h2 {
+    font-weight: 450;
+    font-size: 2rem;
+  }
+}
+
+.create-a-listing-section {
+  font-family: var(--primary-font);
+  width: 47rem;
+  margin: auto;
+}
+
+.create-listing-header {
+  h1 {
+    font-weight: 500;
+    font-size: 5rem;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.listing-image-section {
+  font-family: var(--primary-font);
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  text-align: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+}
+
+.listing-image-section .image-input {
+  position: relative;
+  height: 10rem;
+  width: 12rem;
+  border: 2px solid #000;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  overflow: hidden;
+  img {
+    height: 100%;
+    object-fit: cover;
+    z-index: 9;
+  }
+}
+
+.remove-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform ease 200ms;
+}
+
+.remove-image:hover {
+  transform: scale(1.1);
+}
+
+.listing-image-section .image-input input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.listing-image-section .image-input .placeholder {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.listing-image-section .image-input .placeholder span {
+  font-size: 1rem;
+  color: gray;
+}
+
+.listing-image-section .create-image-input {
+  height: 3rem;
+  width: 2rem;
+  border: 2px dotted black;
+  height: 10rem;
+  width: 12rem;
+  margin: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/* property-type */
+.listing-property-type-section {
+  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 20px;
+  place-items: center;
+  flex-wrap: wrap;
+  align-items: center;
+  text-align: center;
+}
+
+.property-type-card {
+  display: grid;
+  place-content: center;
+  padding: 4rem;
+  width: 12rem;
+  height: 7rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.943);
+  color: white;
+  img {
+    aspect-ratio: 2/3;
+    width: 3rem;
+    object-fit: contain;
+  }
+  p {
+    font-size: 0.8rem;
+  }
+}
+.listing-selected {
+  outline: 5px solid rgb(64, 125, 71);
+  outline-offset: 0.11rem;
+}
+
+.listing-detail-section-header {
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.property-features-detail-section {
+  margin-top: 1rem;
+  display: grid;
+  row-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+}
+.property-feature-detail-div {
+  h3 {
+    font-weight: 500;
+  }
+
+  input {
+    padding: 1rem;
+    font-size: 1rem;
+    width: 15rem;
+    border-radius: 0.8rem;
+    border: 3px solid black;
+    outline: none;
+  }
+}
+
+.property-amenities-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.property-amenities-card {
+  background-color: black;
+  border-radius: 0.8rem;
+  color: rgb(224, 220, 220);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 10rem;
+  gap: 1rem;
+  width: 10rem;
+  height: 8rem;
+  font-weight: 500;
+}
+
+.amenity-selected {
+  outline: 3px solid rgb(27, 184, 13);
+  outline-offset: 2;
+}
+
+.listing-submit-button {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  margin: auto;
+  border-radius: 0.7rem;
+  border: none;
+  font-size: 1.4rem;
+  margin-top: 5rem;
+  cursor: pointer;
+  background-color: rgb(183, 186, 180);
+}

@@ -1,0 +1,40 @@
+.meet-your-host-div {
+  padding-bottom: 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgb(221, 217, 217);
+  .meet-your-host-header {
+    font-weight: 500;
+  }
+}
+
+.host-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.host-card-flex {
+  display: flex;
+  gap: 30px;
+  margin-top: 1rem;
+}
+
+.host-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-transform: capitalize;
+
+  button {
+    padding: 1rem;
+    border-radius: 0.6rem;
+    border: 1px solid black;
+    background-color: white;
+    transition: all ease 120ms;
+    cursor: pointer;
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+}

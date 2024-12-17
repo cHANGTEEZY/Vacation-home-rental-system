@@ -1,0 +1,71 @@
+.chat-with-host-container {
+  width: 700px;
+  font-family: var(--primary-font);
+  margin: 0 auto;
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+}
+
+.host-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(229, 222, 222);
+  padding-bottom: 1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.host-info-right-user {
+  background-color: black;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-section {
+  display: grid;
+  gap: 1rem;
+
+  form {
+    display: grid;
+    gap: 10px;
+  }
+
+  .message-host-box {
+    height: 7rem;
+    border: 1px solid rgb(155, 151, 151);
+    border-radius: 0.6rem;
+    width: 30rem;
+    text-indent: 0.5rem;
+    padding-top: 0.5rem;
+    resize: vertical;
+    font-size: 0.8rem;
+
+    &::placeholder {
+      font-size: 0.8rem;
+      font-family: var(--primary-font);
+    }
+  }
+
+  button {
+    width: 12rem;
+    padding: 1rem;
+    border: 1px solid rgb(155, 151, 151);
+    border-radius: 0.6rem;
+    background-color: white;
+    transition: all ease 130ms;
+    font-size: 0.8rem;
+    &:hover {
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,74 @@
+.confirm-and-pay-container {
+  width: 1100px;
+  margin: 0 auto;
+  font-family: var(--primary-font);
+}
+
+.confirm-and-pay-header {
+  font-weight: 500;
+  font-size: 2.9rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* card css */
+
+.confirm-trip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: relative;
+}
+.go-back {
+  position: absolute;
+  left: -5%;
+  cursor: pointer;
+  background-color: rgb(236, 231, 231);
+  display: flex;
+  border-radius: 50%;
+  padding: 0.5rem;
+  &:hover {
+    background-color: hsl(0, 12%, 90%);
+  }
+}
+
+.confirm-details-card {
+  border: 1px solid rgb(223, 217, 217);
+  padding: 1.4rem;
+  border-radius: 0.8rem;
+  width: 600px;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+}
+
+.confirm-details-card-top {
+  display: flex;
+  gap: 20px;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgb(223, 217, 217);
+
+  img {
+    width: 8rem;
+    height: 6rem;
+    border-radius: 0.8rem;
+  }
+  .confirm-details-card-description {
+    .confirm-details-card-description-title {
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.paypal-payment {
+  width: 600px;
+}
+
+.confirm-details-card-bottom-title {
+  font-weight: 500;
+}

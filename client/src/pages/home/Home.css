@@ -1,0 +1,10 @@
+.home {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.property-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}

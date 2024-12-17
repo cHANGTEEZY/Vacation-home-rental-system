@@ -1,0 +1,144 @@
+.realestate-hosting-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  font-family: var(--primary-font);
+}
+
+.hosting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h1 {
+    font-weight: 400;
+    font-size: 2.23rem;
+  }
+}
+
+.create-a-listing-button {
+  padding: 1rem 1rem;
+  font-size: 0.82rem;
+  background-color: white;
+  border-radius: 0.32rem;
+  border: 1px solid black;
+  color: black;
+  cursor: pointer;
+  transition: all ease 200ms;
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}
+
+.nothing-to-do {
+  display: flex;
+  border-radius: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 25rem;
+  font-size: 1.2rem;
+  background-color: rgb(246, 246, 246);
+
+  .nothing-to-do-inner-div {
+    display: grid;
+    place-items: center;
+    gap: 20px;
+    width: 12rem;
+    font-size: 1.1rem;
+  }
+}
+
+.hosting-status-description,
+.listing-status-description {
+  margin: 4rem 0;
+  h2 {
+    font-weight: 400;
+    margin-bottom: 2rem;
+  }
+}
+
+.listing-card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+}
+
+.delete-listing,
+.update-listing {
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 0.51rem;
+  padding: 4px;
+  transition: all 300ms ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.delete-listing {
+  right: 3%;
+  top: 2%;
+  color: white;
+  background-color: rgb(184, 6, 6);
+}
+
+.update-listing {
+  left: 3%;
+  top: 2%;
+  background-color: grey;
+  color: white;
+}
+
+.listing-card {
+  width: 400px;
+  background-color: hsl(0, 0%, 90%);
+  padding: 1rem 0;
+  position: relative;
+  border-radius: 0.51rem;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 550;
+    font-size: 2rem;
+  }
+
+  h3 {
+    margin-top: 3rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    font-size: 1.4rem;
+  }
+
+  .listing-card-image {
+    height: 280px;
+  }
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.listing-card-detail {
+  h3 {
+    margin: 2rem 0 0.21rem 1rem;
+  }
+  p {
+    margin: 0 1rem;
+  }
+
+  .listing-card-detail-head {
+    font-weight: 400;
+    color: black;
+  }
+
+  p {
+    color: rgb(92, 88, 88);
+    font-weight: 400;
+    padding-bottom: 0.2rem;
+  }
+}
