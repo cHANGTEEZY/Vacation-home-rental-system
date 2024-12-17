@@ -1,4 +1,4 @@
-import Carousel from "../ui/carousel/Carousel";
+import Carousel from "../ui/Carousel/Carousel";
 import { properties } from "../../data/properties";
 import "./FeaturedProperty.css";
 

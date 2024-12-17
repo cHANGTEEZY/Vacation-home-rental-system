@@ -1,6 +1,6 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Share,
   ChevronDown,
@@ -31,9 +31,10 @@ import timeAgo from "../../utils/timeAgo";
 import MapBox from "../../components/Map/MapBox";
 import Footer from "../../components/Footer/Footer";
 import Testimonials from "../../components/Testimonials/Testimonials";
-import HostDetails from "../../components/Host/HostDetails.Jsx";
+import HostDetails from "../../components/Host/HostDetails";
 import PropertyReviewDesc from "../../components/Review&Ratings/PropertyReviewDesc";
 import Wishlist from "./Wishlist";
+import { toast } from "react-toastify";
 
 const PropertyBooking = () => {
   const { id } = useParams();
@@ -177,6 +178,16 @@ const PropertyBooking = () => {
       console.error(error.message);
     }
   };
+
+  const token = localStorage.getItem("token");
+
+  const redirect = useNavigate();
+  useEffect(() => {
+    if (!token) {
+      toast.error("Unauthorized");
+      redirect("/");
+    }
+  }, [token]);
 
   useEffect(() => {
     checkCachedData();

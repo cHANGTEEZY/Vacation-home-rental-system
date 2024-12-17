@@ -1,5 +1,5 @@
 import "./PropertyOptions.css";
-import Carousel from "../ui/carousel/Carousel";
+import Carousel from "../ui/Carousel/Carousel";
 import { variety } from "../../data/variety";
 
 import { useState } from "react";

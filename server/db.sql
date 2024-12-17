@@ -30,8 +30,8 @@ CREATE TABLE property_listing_details (
     swimming_pool INT  NOT NULL CHECK (swimming_pool >= 0),  
     amenities JSONB,  
     image_urls TEXT[],  
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
 
 CREATE TABLE bookings (
@@ -73,10 +73,10 @@ CREATE TABLE booked_properties (
     booked_property_id  SERIAL PRIMARY KEY,
     property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE wishlists (
     wishlists_id SERIAL PRIMARY KEY,
     property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
-)
+);

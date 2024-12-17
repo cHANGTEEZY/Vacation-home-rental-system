@@ -11,7 +11,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HostingSetup.css";
 
-import UpdateListingModal from "./updateListingModal";
+import UpdateListingModal from "./UpdateListingModal";
 
 const HostingSetup = () => {
   const [name, setName] = useState("");

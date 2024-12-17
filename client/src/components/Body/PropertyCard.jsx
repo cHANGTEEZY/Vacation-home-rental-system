@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircleChevronRight, CircleChevronLeft, Heart } from "lucide-react";
-import Carousel from "../ui/carousel/Carousel";
+import Carousel from "../ui/Carousel/Carousel";
 import { formatPrice } from "../../utils/formatPrice";
 import "./PropertyCard.css";
 
