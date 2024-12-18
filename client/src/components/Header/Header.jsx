@@ -133,6 +133,14 @@ export default function Header({
                     <span
                       className="account-item"
                       onClick={() =>
+                        handleNavigate("account-settings/Visited-properties")
+                      }
+                    >
+                      Review
+                    </span>
+                    <span
+                      className="account-item"
+                      onClick={() =>
                         handleNavigate("account-settings/messages")
                       }
                     >

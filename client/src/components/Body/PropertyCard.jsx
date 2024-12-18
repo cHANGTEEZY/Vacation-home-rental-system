@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircleChevronRight, CircleChevronLeft, Heart } from "lucide-react";
 import Carousel from "../ui/Carousel/Carousel";
@@ -8,6 +8,7 @@ import "./PropertyCard.css";
 const PropertyCard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
+  console.log(propertyDetails);
   const redirect = useNavigate();
 
   const settings = {

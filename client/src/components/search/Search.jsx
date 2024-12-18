@@ -8,7 +8,11 @@ import MapCompo from "../../components/ui/Map/Map";
 import AddGuest from "../ui/Guest/AddGuest";
 import { toast } from "react-toastify";
 
+import { useFilteredData } from "../../context/FilteredDataContext";
+
 export default function SearchComponent() {
+  const { setFilteredData, setSearchState } = useFilteredData();
+
   const [locationName, setLocationName] = useState("");
   const [clicked, setClicked] = useState(null);
   const [totalGuest, setTotalGuest] = useState(0);
@@ -61,6 +65,10 @@ export default function SearchComponent() {
       totalGuest,
     };
 
+    console.log(formData);
+    if (formData.regionName === "") {
+      return alert("Select a region");
+    }
     try {
       const response = await fetch("http://localhost:3000/filter", {
         method: "POST",
@@ -74,6 +82,8 @@ export default function SearchComponent() {
       if (!response.ok) {
         toast.error(data.message);
       }
+      setFilteredData(data.properties);
+      setSearchState(true);
     } catch (error) {
       throw new Error("Something went wrong", error);
     }

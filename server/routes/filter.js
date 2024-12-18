@@ -5,7 +5,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
 const router = express.Router();
 
-//aws setup
+// AWS setup
 const bucketName = process.env.BUCKET_NAME;
 const bucketRegion = process.env.BUCKET_REGION;
 const accessKey = process.env.ACCESS_KEY;
@@ -27,28 +27,89 @@ const generateSignedUrls = async (imageUrls) => {
         Key: imageKey,
       };
       const command = new GetObjectCommand(params);
-      return getSignedUrl(s3, command, { expiresIn: 3600 }); // URL expires in 1 hour
+      return getSignedUrl(s3, command, { expiresIn: 3600 });
     })
   );
 };
 
 router.post("/", async (req, res) => {
   const { startDate, endDate, regionName, totalGuest } = req.body;
-  console.log(startDate, endDate, regionName, totalGuest);
+
   try {
-    const query =
-      "SELECT * from property_listing_details WHERE property_region=$1 AND guests>=$2";
+    let propertyQuery;
+    let queryParams;
 
-    const queryResult = await pool.query(query, [regionName, totalGuest]);
-    if (queryResult.rows.length === 0)
-      return res
-        .status(401)
-        .json({ message: "Couldn't find property with following constraints" });
+    // Step 1: Determine the query based on regionName
+    if (regionName === "Global") {
+      propertyQuery = `
+        SELECT * 
+        FROM property_listing_details 
+        WHERE guests >= $1
+      `;
+      queryParams = [totalGuest];
+    } else {
+      propertyQuery = `
+        SELECT * 
+        FROM property_listing_details 
+        WHERE property_region = $1 
+        AND guests >= $2
+      `;
+      queryParams = [regionName, totalGuest];
+    }
 
-    console.log(queryResult.rows);
+    // Step 2: Fetch properties
+    const propertyResult = await pool.query(propertyQuery, queryParams);
+
+    if (propertyResult.rows.length === 0) {
+      return res.status(404).json({
+        message: "No properties found with the given constraints.",
+      });
+    }
+
+    // Step 3: Filter properties based on availability
+    const availableProperties = [];
+
+    for (const property of propertyResult.rows) {
+      const { property_id, image_urls } = property;
+
+      // Check bookings for the property
+      const bookingQuery = `
+        SELECT booking_start_date, booking_end_date 
+        FROM bookings 
+        WHERE property_id = $1
+      `;
+      const bookingResult = await pool.query(bookingQuery, [property_id]);
+
+      // Check if the property is available for the given date range
+      const isAvailable = bookingResult.rows.every((booking) => {
+        const { booking_start_date, booking_end_date } = booking;
+        return (
+          new Date(endDate) <= new Date(booking_start_date) ||
+          new Date(startDate) >= new Date(booking_end_date)
+        );
+      });
+
+      if (isAvailable) {
+        // Generate signed URLs for property images
+        const signedImageUrls = await generateSignedUrls(image_urls || []);
+        availableProperties.push({
+          ...property,
+          image_urls: signedImageUrls,
+        });
+      }
+    }
+
+    // Step 4: Return available properties to the user
+    if (availableProperties.length === 0) {
+      return res.status(404).json({
+        message: "No properties available for the selected date range.",
+      });
+    }
+
+    res.status(200).json({ properties: availableProperties });
   } catch (error) {
-    res.status(500).json("INTERNAL SERVER ERROR", error);
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 });
 

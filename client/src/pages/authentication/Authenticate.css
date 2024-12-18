@@ -50,16 +50,18 @@
   height: 560px;
   border-left: 1px solid;
   width: 410px;
-  background: rgb(64, 179, 45);
-  background: linear-gradient(
-    5deg,
-    rgba(64, 179, 45, 0.27074579831932777) 0%,
-    rgba(9, 121, 66, 0.6432948179271709) 25%,
-    rgba(44, 190, 39, 0.5956757703081232) 100%
-  );
+
   margin-right: 10px;
   border-radius: var(--card-border-radius);
   border: none;
+  img {
+    object-fit: cover;
+    height: 560px;
+    width: 410px;
+    border-radius: var(--card-border-radius);
+    filter: brightness(90%) grayscale(10%); /* Dim and grayscale */
+    /* filter: hue-rotate(120deg) brightness(70%) saturate(100%); */
+  }
 }
 
 .form-header {

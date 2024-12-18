@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "./Authenticate.css";
 import logo from "../../assets/images/Logo/n.png";
 import { Link, useNavigate } from "react-router-dom";
+import formImage from "../../assets/images/Form/form.jpg";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -137,7 +138,9 @@ export default function SignUp() {
               </div>
             </div>
           </form>
-          <div className="form-side "></div>
+          <div className="form-side ">
+            <img src={formImage} alt="form-image" />
+          </div>
         </div>
       </div>
       <div className="footer-position">
