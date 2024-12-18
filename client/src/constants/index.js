@@ -64,6 +64,15 @@ const accountGrid = [
     iconStrokeWidth: 1.3,
     link: "wishlists",
   },
+  {
+    id: 7,
+    title: "Visited Properties & Reviews",
+    description: "View your visited properties and Review it",
+    icon: Heart,
+    iconSize: 38,
+    iconStrokeWidth: 1.3,
+    link: "Visited-properties",
+  },
 ];
 
 const nestifySetupDescription = [

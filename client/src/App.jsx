@@ -21,6 +21,7 @@ import PropertyPayment from "./pages/Payment/PropertyPayment";
 import GetRouteToDestination from "./components/Map/GetRouteToDestination";
 import Review from "./pages/Review/Review";
 import Message from "./pages/Messaging/Message";
+import VisitedPropertiesAndReviews from "./pages/userAccount/VisitedPropertiesAndReviews";
 
 export default function App() {
   return (
@@ -44,11 +45,15 @@ export default function App() {
           <Route path="/account-settings/booking" element={<Booking />} />
           <Route path="/account-settings/nestify" element={<Hosting />} />
           <Route path="/account-settings/wishlists" element={<Wishlists />} />
-
           <Route
             path="/account-settings/nestify/listings"
             element={<HostingSetup />}
           />
+          <Route
+            path="/account-settings/Visited-properties"
+            element={<VisitedPropertiesAndReviews />}
+          />
+
           <Route path="/become-a-host" element={<Listing />} />
           <Route
             path="/property/:id"

@@ -80,3 +80,10 @@ CREATE TABLE wishlists (
     property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE visited_properties (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
+  property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+  CONSTRAINT unique_user_property UNIQUE (user_id, property_id)
+);

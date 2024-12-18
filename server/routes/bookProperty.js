@@ -101,7 +101,7 @@ router.delete("/:bookingId", authenticateToken, async (req, res) => {
   }
 });
 
-//delete booking after it has matured
+//delete booking after it has matured and add it to the visited properties table tooez
 router.delete("/", authenticateToken, async (req, res) => {
   const { bookingIds } = req.body;
   const userId = req.userId.id;
@@ -113,14 +113,18 @@ router.delete("/", authenticateToken, async (req, res) => {
     return res.status(400).json({ message: "No booking IDs provided" });
   }
 
+  const client = await pool.connect();
   try {
+    await client.query("BEGIN"); // Start transaction
+
+    // Get bookings that belong to the user and match the provided booking IDs
     const getBookingsQuery = `
-      SELECT booking_id, booking_end_date
+      SELECT booking_id, booking_end_date, property_id
       FROM bookings
       WHERE user_id = $1 AND booking_id = ANY($2::int[])
     `;
 
-    const bookings = await pool.query(getBookingsQuery, [userId, bookingIds]);
+    const bookings = await client.query(getBookingsQuery, [userId, bookingIds]);
 
     console.log("Fetched bookings:", bookings.rows);
 
@@ -142,33 +146,54 @@ router.delete("/", authenticateToken, async (req, res) => {
       });
     }
 
+    // Insert expired bookings into visited_properties
+    for (const booking of expiredBookings) {
+      const insertVisitedPropertiesQuery = `
+        INSERT INTO visited_properties (user_id, property_id)
+        VALUES ($1, $2)
+        ON CONFLICT (user_id, property_id) DO NOTHING;
+      `;
+      await client.query(insertVisitedPropertiesQuery, [
+        userId,
+        booking.property_id,
+      ]);
+    }
+
     // Extract booking IDs to delete
     const expiredBookingIds = expiredBookings.map(
       (booking) => booking.booking_id
     );
 
-    // Modified query to delete using integer IDs
+    // Delete the expired bookings
     const deleteBookingsQuery = `
       DELETE FROM bookings
       WHERE user_id = $1 AND booking_id = ANY($2::int[])
       RETURNING booking_id
     `;
-
-    const deletedBookings = await pool.query(deleteBookingsQuery, [
+    const deletedBookings = await client.query(deleteBookingsQuery, [
       userId,
       expiredBookingIds,
     ]);
 
+    // Commit the transaction
+    await client.query("COMMIT");
     return res.status(200).json({
-      message: "Expired bookings deleted successfully",
+      message:
+        "Expired bookings deleted and added to visited properties successfully",
       deletedBookingIds: deletedBookings.rows.map((row) => row.booking_id),
     });
   } catch (error) {
+    // Rollback transaction in case of an error
+    await client.query("ROLLBACK");
     console.error("Error deleting expired bookings:", error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
     });
+  } finally {
+    // Release the client back to the pool
+    client.release();
   }
 });
+
 export default router;

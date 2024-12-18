@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 export default function Booking() {
   const [bookingData, setBookingData] = useState([]);
   const [propertyDetails, setPropertyDetails] = useState([]);
-  const [reviewAvailable, setReviewAvailable] = useState(false);
 
   const navigate = useNavigate();
 
@@ -103,22 +102,13 @@ export default function Booking() {
     }
   };
 
-  const checkIfPropertyIsReviewable = () => {
-    const bookingEndDate = new Date(bookingData.bookingEndDate);
-    const currentDate = new Date();
-
-    if (currentDate > bookingEndDate) {
-      setReviewAvailable(true);
-    }
-  };
-
   const checkIfBookingHasMatured = async () => {
     const bookingIds = bookingData.map((item) => item.bookingId);
-
     const token = localStorage.getItem("token");
     if (!token) return;
 
     try {
+      // Send a request to the backend to delete expired bookings and mark properties as visited
       const response = await fetch(
         "http://localhost:3000/get-booking-details",
         {
@@ -132,21 +122,23 @@ export default function Booking() {
       );
 
       const data = await response.json();
+
       if (!response.ok) {
-        console.log(data.message);
-      } else {
-        toast.success(data.message);
+        // If the response is not OK, show the error message
+        return toast.error(data.message);
       }
+
+      // Show a success message if both deletion and visit actions succeed
+      toast.success(data.message);
     } catch (error) {
-      console.error("Something went wrong", error);
-      throw new Error("Something went wrong");
+      console.error("Error in checkIfBookingHasMatured:", error.message);
+      toast.error("An error occurred while processing bookings.");
     }
   };
 
   useEffect(() => {
     if (bookingData.length > 0) {
       getPropertyDetails();
-      checkIfPropertyIsReviewable();
       checkIfBookingHasMatured();
     }
   }, [bookingData]);
@@ -259,22 +251,6 @@ export default function Booking() {
                           </p>
                         </>
                       )}
-                      <Link
-                        to={`/property-review/${
-                          booking.propertyId
-                        }?propertyImage=${encodeURIComponent(
-                          property.imageUrls[0]
-                        )}&propertyTitle=${property.title}`}
-                      >
-                        <button
-                          className={`give-review-button ${
-                            reviewAvailable ? "reviewable" : "not-reviewable"
-                          }`}
-                          disabled={!reviewAvailable}
-                        >
-                          Give Review
-                        </button>
-                      </Link>
                     </div>
                   </div>
                 );

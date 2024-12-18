@@ -16,6 +16,7 @@ import getBookedDates from "./routes/getBookingDates.js";
 import reviewProperty from "./routes/reviewProperty.js";
 import messageHost from "./routes/messageHost.js";
 import wishlist from "./routes/wishList.js";
+import visitedProperties from "./routes/visitedProperties.js";
 import filter from "./routes/filter.js";
 
 const app = express();
@@ -45,6 +46,7 @@ app.use("/get-property-booked-date", getBookedDates);
 app.use("/review-property", reviewProperty);
 app.use("/message-host", messageHost);
 app.use("/wishlist", wishlist);
+app.use("/visited-properties", visitedProperties);
 app.use("/filter", filter);
 
 // Error handling middleware
