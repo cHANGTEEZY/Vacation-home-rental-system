@@ -1,4 +1,73 @@
 .visited-properties-section {
   max-width: 1200px;
   margin: 0 auto;
+  font-family: var(--primary-font);
+}
+
+.visited-item {
+  margin-bottom: 2rem;
+}
+
+.visited-description-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.visited-property-title {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 550;
+}
+
+.visited-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 900px;
+}
+
+.property-image-div-grid-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.property-image-div-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.property-image-div-grid-item:hover img {
+  transform: scale(1.1);
+}
+
+.visited-description span {
+  color: rgb(122, 106, 106);
+}
+
+.visited-bottom {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(206, 199, 199);
+  padding-bottom: 2rem;
+
+  button {
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    padding: 1.6rem;
+    border-radius: 0.6rem;
+    border: none;
+    cursor: pointer;
+    transition: all ease 200ms;
+    text-decoration: none;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
 }
