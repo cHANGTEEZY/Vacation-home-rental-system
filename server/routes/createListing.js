@@ -126,7 +126,7 @@ router.get("/", authenticateToken, async (req, res) => {
       const listings = await Promise.all(
         data.rows.map(async (listing) => {
           const {
-            id,
+            property_id,
             property_type,
             title,
             approximate_location,
@@ -159,7 +159,7 @@ router.get("/", authenticateToken, async (req, res) => {
 
           // Return the structured listing object
           return {
-            id,
+            property_id,
             propertyType: property_type,
             title,
             approximateLocation: approximate_location,
@@ -281,7 +281,7 @@ router.put("/", authenticateToken, async (req, res) => {
       UPDATE property_listing_details 
       SET title = $1, price = $2, property_type = $3, approximate_location = $4, 
           guests = $5, beds = $6, bedrooms = $7, bathrooms = $8, kitchens = $9 , property_region=$10
-      WHERE id = $11
+      WHERE property_id = $11
     `;
     const values = [
       title,

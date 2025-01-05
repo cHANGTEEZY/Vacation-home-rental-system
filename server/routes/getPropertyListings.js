@@ -45,7 +45,7 @@ router.get("/", async (req, res) => {
       const listingData = await Promise.all(
         data.rows.map(async (listing) => {
           const {
-            id,
+            property_id,
             property_type,
             title,
             approximate_location,
@@ -68,7 +68,7 @@ router.get("/", async (req, res) => {
 
           // Return structured data including signed URLs
           return {
-            id,
+            property_id,
             propertyType: property_type,
             title,
             approximateLocation: approximate_location,
@@ -100,11 +100,12 @@ router.get("/", async (req, res) => {
   }
 });
 
+//get property of specific id
 router.get("/:propertyId", async (req, res) => {
   const propertyId = req.params.propertyId;
 
   const data = await pool.query(
-    "SELECT * from property_listing_details WHERE id=$1",
+    "SELECT * from property_listing_details WHERE property_id=$1",
     [propertyId]
   );
   try {
@@ -112,7 +113,7 @@ router.get("/:propertyId", async (req, res) => {
       const listingData = await Promise.all(
         data.rows.map(async (listing) => {
           const {
-            id,
+            property_id,
             property_type,
             title,
             approximate_location,
@@ -135,7 +136,7 @@ router.get("/:propertyId", async (req, res) => {
 
           // Return structured data including signed URLs
           return {
-            id,
+            property_id,
             propertyType: property_type,
             title,
             approximateLocation: approximate_location,
@@ -172,7 +173,7 @@ router.get("/host-name/:propertyId", async (req, res) => {
        FROM user_details 
        INNER JOIN property_listing_details 
        ON user_details.user_id = property_listing_details.user_id 
-       WHERE property_listing_details.id = $1`,
+       WHERE property_listing_details.property_id = $1`,
       [propertyId]
     );
 
@@ -209,7 +210,7 @@ router.get("/multiple/:propertyIds", async (req, res) => {
     const placeholders = propertyIds
       .map((_, index) => `$${index + 1}`)
       .join(", ");
-    const query = `SELECT id,property_type,title,approximate_location,latitude,longitude,image_urls FROM property_listing_details WHERE id IN (${placeholders})`;
+    const query = `SELECT property_id,property_type,title,approximate_location,latitude,longitude,image_urls FROM property_listing_details WHERE property_id IN (${placeholders})`;
 
     // Use the dynamically created query
     const data = await pool.query(query, propertyIds);
@@ -218,7 +219,7 @@ router.get("/multiple/:propertyIds", async (req, res) => {
       const listingData = await Promise.all(
         data.rows.map(async (listing) => {
           const {
-            id,
+            property_id,
             property_type,
             title,
             approximate_location,
@@ -232,7 +233,7 @@ router.get("/multiple/:propertyIds", async (req, res) => {
 
           // Return structured data including signed URLs
           return {
-            id,
+            property_id,
             propertyType: property_type,
             title,
             approximateLocation: approximate_location,

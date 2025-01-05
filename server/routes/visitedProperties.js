@@ -39,8 +39,8 @@ router.get("/", authenticateToken, async (req, res) => {
   if (!userId) return res.status(400).json({ message: "Unauthorized" });
 
   try {
-    const query = `SELECT p.approximate_location,p.property_region, p.id, p.image_urls, p.title, p.beds, p.bedrooms FROM 
-      property_listing_details p INNER JOIN visited_properties v ON p.id = v.property_id WHERE v.user_id = $1`;
+    const query = `SELECT p.approximate_location,p.property_region, p.property_id, p.image_urls, p.title, p.beds, p.bedrooms FROM 
+      property_listing_details p INNER JOIN visited_properties v ON p.property_id = v.property_id WHERE v.user_id = $1`;
 
     const result = await pool.query(query, [userId]);
 
@@ -53,7 +53,7 @@ router.get("/", authenticateToken, async (req, res) => {
     const visitedPropertiesData = await Promise.all(
       result.rows.map(async (row) => {
         const {
-          id,
+          property_id,
           image_urls,
           title,
           beds,
@@ -63,7 +63,7 @@ router.get("/", authenticateToken, async (req, res) => {
         } = row;
         const signedImageUrls = await generateSignedUrls(image_urls || []);
         return {
-          id,
+          property_id,
           title,
           approximate_location,
           property_region,

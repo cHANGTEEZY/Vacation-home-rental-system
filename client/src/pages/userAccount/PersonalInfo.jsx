@@ -139,7 +139,6 @@ export default function PersonalInfo() {
                   <>
                     <TextField
                       id="outlined-basic"
-                      label="userName"
                       variant="outlined"
                       sx={{
                         width: "400px",
@@ -185,7 +184,6 @@ export default function PersonalInfo() {
                   <>
                     <TextField
                       id="outlined-basic"
-                      label="email"
                       variant="outlined"
                       value={newUserData.newUserEmail}
                       onChange={(e) =>
@@ -231,7 +229,6 @@ export default function PersonalInfo() {
                   <>
                     <TextField
                       id="outlined-basic"
-                      label="userName"
                       variant="outlined"
                       sx={{
                         width: "400px",
@@ -281,7 +278,6 @@ export default function PersonalInfo() {
                   <>
                     <TextField
                       id="outlined-basic"
-                      label="userName"
                       variant="outlined"
                       sx={{
                         width: "400px",
@@ -329,7 +325,6 @@ export default function PersonalInfo() {
                   <>
                     <TextField
                       id="outlined-basic"
-                      label="userName"
                       variant="outlined"
                       sx={{
                         width: "400px",
@@ -377,7 +372,6 @@ export default function PersonalInfo() {
                   <>
                     <TextField
                       id="outlined-basic"
-                      label="userName"
                       variant="outlined"
                       sx={{
                         width: "400px",

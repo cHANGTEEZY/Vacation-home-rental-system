@@ -13,7 +13,7 @@ CREATE TABLE user_details (
 );
 
 CREATE TABLE property_listing_details (
-    id SERIAL PRIMARY KEY,
+    property_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,  
     property_type VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -31,13 +31,13 @@ CREATE TABLE property_listing_details (
     amenities JSONB,  
     image_urls TEXT[],  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE bookings (
     booking_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
-    property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+    property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     booking_start_date DATE NOT NULL,
     booking_end_date DATE NOT NULL,
     total_guests INT NOT NULL CHECK (total_guests > 0),
@@ -51,7 +51,7 @@ CREATE TABLE bookings (
 CREATE TABLE reviews (
     review_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
-    property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+    property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     rating INT NOT NULL CHECK (rating>=1 AND rating <=5),
     review_message TEXT NOT NULL,
     review_date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -59,7 +59,7 @@ CREATE TABLE reviews (
 
 CREATE TABLE messages (
     message_id SERIAL PRIMARY KEY,
-    property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+    property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
     sender_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
     sent_message TEXT ,
@@ -71,19 +71,19 @@ CREATE TABLE messages (
 
 CREATE TABLE booked_properties (
     booked_property_id  SERIAL PRIMARY KEY,
-    property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+    property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE wishlists (
     wishlists_id SERIAL PRIMARY KEY,
-    property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+    property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE visited_properties (
-  id SERIAL PRIMARY KEY,
+  visited_property_id SERIAL PRIMARY KEY,
   user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
-  property_id INT NOT NULL REFERENCES property_listing_details(id) ON DELETE CASCADE,
+  property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
   CONSTRAINT unique_user_property UNIQUE (user_id, property_id)
 );

@@ -11,7 +11,7 @@ router.post("/:id", authenticateToken, async (req, res) => {
 
   try {
     const queryForHostId =
-      "SELECT user_id FROM property_listing_details WHERE id = $1";
+      "SELECT user_id FROM property_listing_details WHERE property_id = $1";
     const hostData = await pool.query(queryForHostId, [hostPropertyId]);
 
     if (hostData.rows.length > 0) {
@@ -94,7 +94,7 @@ router.get("/", authenticateToken, async (req, res) => {
         p.title AS property_title
       FROM messages m
       JOIN user_details u ON m.host_id = u.user_id
-      JOIN property_listing_details p ON m.property_id = p.id
+      JOIN property_listing_details p ON m.property_id = p.property_id
       WHERE m.sender_id = $1 OR m.host_id = $1
       ORDER BY m.host_id, m.property_id, m.created_at DESC
       `,
