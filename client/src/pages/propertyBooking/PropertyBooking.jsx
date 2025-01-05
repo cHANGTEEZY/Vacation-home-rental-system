@@ -575,8 +575,8 @@ const PropertyBooking = () => {
             showLatitude={false}
             showLongitude={false}
             showSearchLocation={false}
-            latitude={propertyDetail.latitude}
-            longitude={propertyDetail.longitude}
+            initialLatitude={propertyDetail.latitude}
+            initialLongitude={propertyDetail.longitude}
             showPopup={true}
           />
         </div>

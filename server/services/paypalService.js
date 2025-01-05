@@ -7,6 +7,8 @@ dotenv.config();
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 
+console.log(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET);
+
 // Function to generate access token with retry logic
 export async function generateAccessToken(retries = 3) {
   const BASE64_ENCODED_CLIENT_ID_AND_SECRET = Buffer.from(

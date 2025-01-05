@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { formatPrice } from "../../utils/formatPrice";
 
 import { useFilteredData } from "../../context/FilteredDataContext";
+import { toast } from "react-toastify";
 
 const FilteredProperty = () => {
   const { filteredData, searchState } = useFilteredData();
@@ -32,6 +33,13 @@ const FilteredProperty = () => {
     }
   }, []);
 
+  // Trigger toast if no properties are found
+  useEffect(() => {
+    if (filteredData.length === 0 && searchState) {
+      toast.error("Property with the given constraints not found");
+    }
+  }, [filteredData, searchState]);
+
   const handleCardClick = (e, propertyId) => {
     e.preventDefault();
     if (e.target.closest(".navigate-button")) {
@@ -48,14 +56,20 @@ const FilteredProperty = () => {
     <section className="filtered-property-section">
       {searchState && (
         <>
-          <h1 className="home-h-one">Filtered Property</h1>
+          {filteredData.length > 0 ? (
+            <h1 className="home-h-one">Filtered Property</h1>
+          ) : (
+            <div className="filter-error-msg">
+              No properties match your search criteria.
+            </div> // You can optionally show this instead of the toast here.
+          )}
           <div className="filtered-property-grid">
             {filteredData.length > 0 &&
               filteredData.map((property) => (
                 <div
                   key={property.id}
                   className="card"
-                  onClick={(e) => handleCardClick(e, property.id)}
+                  onClick={(e) => handleCardClick(e, property.property_id)}
                 >
                   <Heart className="favourite-button card-button" />
                   <Carousel

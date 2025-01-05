@@ -52,8 +52,7 @@ export default function VisitedPropertiesAndReviews() {
       <section className="visited-properties-section">
         <Breadcrumb />
         <div className="visited-properties-div">
-          <div className="visited-grid">
-            {/* Check if visitedProperties exists and is an array */}
+          <div className="visited-grid-container">
             {Array.isArray(visitedProperties) &&
             visitedProperties.length > 0 ? (
               visitedProperties.map((property) => (
@@ -92,7 +91,7 @@ export default function VisitedPropertiesAndReviews() {
                     </div>
                     <Link
                       to={`/property-review/${
-                        property.id
+                        property.property_id
                       }?propertyImage=${encodeURIComponent(
                         property.images[0]
                       )}&propertyTitle=${encodeURIComponent(property.title)}`}

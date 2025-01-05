@@ -81,9 +81,9 @@ const PropertyCard = () => {
       {propertyDetails.length > 0 ? (
         propertyDetails.map((property) => (
           <div
-            key={property.id}
+            key={property.property_id}
             className="card"
-            onClick={(e) => handleCardClick(e, property.id)}
+            onClick={(e) => handleCardClick(e, property.property_id)}
           >
             <Heart className="favourite-button card-button" />
             <Carousel

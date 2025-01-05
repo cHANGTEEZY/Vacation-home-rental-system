@@ -5,7 +5,6 @@ import Header from "../../components/Header/Header";
 import { toast } from "react-toastify";
 import "./Booking.css";
 import { Trash } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export default function Booking() {
   const [bookingData, setBookingData] = useState([]);
@@ -24,7 +23,6 @@ export default function Booking() {
       const response = await fetch(
         "http://localhost:3000/get-booking-details",
         {
-          method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -125,7 +123,7 @@ export default function Booking() {
 
       if (!response.ok) {
         // If the response is not OK, show the error message
-        return toast.error(data.message);
+        return toast.info(data.message);
       }
 
       // Show a success message if both deletion and visit actions succeed
@@ -178,7 +176,7 @@ export default function Booking() {
               {propertyDetails.map((property, index) => {
                 // Find the corresponding booking for this property
                 const booking = bookingData.find(
-                  (item) => item.propertyId === property.id
+                  (item) => item.propertyId === property.property_id
                 );
 
                 return (

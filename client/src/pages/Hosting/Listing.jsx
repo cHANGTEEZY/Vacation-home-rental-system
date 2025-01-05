@@ -350,7 +350,7 @@ const Listing = () => {
                 onChange={(e) =>
                   handleLocationChangeDebounced(
                     parseFloat(e.target.value),
-                    listingData.location.longitude
+                    listingData.location.latitude
                   )
                 }
               />
@@ -360,7 +360,7 @@ const Listing = () => {
                 value={listingData.location.longitude || ""}
                 onChange={(e) =>
                   handleLocationChangeDebounced(
-                    listingData.location.latitude,
+                    listingData.location.longitude,
                     parseFloat(e.target.value)
                   )
                 }

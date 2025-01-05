@@ -23,7 +23,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  width: 900px;
+  /* width: 900px; */
 }
 
 .property-image-div-grid-item {
@@ -39,7 +39,7 @@
 }
 
 .property-image-div-grid-item:hover img {
-  transform: scale(1.1);
+  transform: scale(1.01);
 }
 
 .visited-description span {
@@ -60,7 +60,7 @@
     align-items: center;
     padding: 1.6rem;
     border-radius: 0.6rem;
-    border: none;
+    border: 1px solid black;
     cursor: pointer;
     transition: all ease 200ms;
     text-decoration: none;

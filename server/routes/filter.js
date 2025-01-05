@@ -1,5 +1,5 @@
 import express from "express";
-import { pool } from "../db.js";
+import { pool } from "../db.js"; // Ensure pool is properly configured for PostgreSQL
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
@@ -19,6 +19,7 @@ const s3 = new S3Client({
   region: bucketRegion,
 });
 
+// Helper function to generate signed URLs for images
 const generateSignedUrls = async (imageUrls) => {
   return await Promise.all(
     imageUrls.map(async (imageKey) => {
@@ -60,8 +61,10 @@ router.post("/", async (req, res) => {
     // Step 2: Fetch properties
     const propertyResult = await pool.query(propertyQuery, queryParams);
 
+    // If no properties match, return a 200 response with an empty array
     if (propertyResult.rows.length === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
+        properties: [],
         message: "No properties found with the given constraints.",
       });
     }
@@ -100,16 +103,19 @@ router.post("/", async (req, res) => {
     }
 
     // Step 4: Return available properties to the user
-    if (availableProperties.length === 0) {
-      return res.status(404).json({
-        message: "No properties available for the selected date range.",
-      });
-    }
-
-    res.status(200).json({ properties: availableProperties });
+    return res.status(200).json({
+      properties: availableProperties,
+      message:
+        availableProperties.length === 0
+          ? "No properties available for the selected date range."
+          : "Available properties retrieved successfully.",
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error", error });
+    console.error("Error fetching properties:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
 

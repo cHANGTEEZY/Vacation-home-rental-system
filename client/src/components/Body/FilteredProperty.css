@@ -1,0 +1,6 @@
+.filter-error-msg {
+  font-family: var(--primary-font);
+  color: red;
+  text-align: center;
+  margin: 2rem;
+}
