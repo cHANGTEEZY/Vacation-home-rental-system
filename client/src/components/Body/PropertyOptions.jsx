@@ -3,6 +3,7 @@ import Carousel from "../ui/Carousel/Carousel";
 import { variety } from "../../data/variety";
 
 import { useState } from "react";
+import NumberSlider from "../ui/Slider/NumberSlider";
 
 const PropertyOptions = () => {
   const settings = {
@@ -23,7 +24,7 @@ const PropertyOptions = () => {
 
   return (
     <div className="variety-icon-div">
-      <Carousel settings={settings} className="sliding-card ">
+      <Carousel settings={settings}>
         {variety.map((item, index) => {
           const IconComponent = item.filterIcon;
           return (

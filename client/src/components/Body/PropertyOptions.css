@@ -1,6 +1,19 @@
 .variety-icon-div {
-  width: 400px;
+  width: max-content;
+  /* border: 1px solid red; */
   margin: 0 auto;
+  /* display: flex; */
+  /* align-items: center; */
+  /* gap: 20px; */
+}
+
+.bar::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  /* left: 50%; */
+  top: 0;
 }
 
 .icon-div {
@@ -12,6 +25,10 @@
   white-space: nowrap;
   margin: 10px 0;
   position: relative;
+}
+
+.sliding-card {
+  border-right: 1px solid black;
 }
 
 .icon-div.clicked {
