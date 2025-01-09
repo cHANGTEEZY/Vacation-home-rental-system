@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, isAdmin } = req.body;
 
   if (!email || !password) {
     return res.status(400).json("Please fill all fields");
@@ -28,14 +28,23 @@ router.post("/", async (req, res) => {
 
     const user = result.rows[0];
 
-    const checkIfPassworIsCorrect = await bcrypt.compare(
+    // Check if the password matches
+    const checkIfPasswordIsCorrect = await bcrypt.compare(
       password,
       user.user_password
     );
-    if (!checkIfPassworIsCorrect) {
+    if (!checkIfPasswordIsCorrect) {
       return res.status(400).json("Your email or password is incorrect");
     }
 
+    // If the user is an admin, they must check the "Are you an admin?" checkbox
+    if (user.user_role === "admin" && !isAdmin) {
+      return res
+        .status(403)
+        .json("Admins must select the 'Are you an admin?' checkbox");
+    }
+
+    // If the user is not an admin, proceed with the login
     const token = jwtGenerator(user.user_id);
     res.status(200).json({
       message: "Logged in",

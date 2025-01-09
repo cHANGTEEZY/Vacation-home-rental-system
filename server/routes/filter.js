@@ -1,5 +1,5 @@
 import express from "express";
-import { pool } from "../db.js"; // Ensure pool is properly configured for PostgreSQL
+import { pool } from "../db.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
@@ -109,6 +109,69 @@ router.post("/", async (req, res) => {
         availableProperties.length === 0
           ? "No properties available for the selected date range."
           : "Available properties retrieved successfully.",
+    });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+});
+
+router.post("/options", async (req, res) => {
+  const { minPrice, maxPrice, propertyType } = req.body;
+  console.log("Property Type:", propertyType);
+
+  try {
+    // Base query for filtering properties
+    let propertyQuery = `SELECT * FROM property_listing_details WHERE 1=1`;
+    const queryParams = [];
+    let paramCount = 1;
+
+    // Add price range filter if provided
+    if (minPrice && maxPrice) {
+      propertyQuery += ` AND price BETWEEN $${paramCount} AND $${
+        paramCount + 1
+      }`;
+      queryParams.push(minPrice, maxPrice);
+      paramCount += 2;
+    }
+
+    // Only add property type filter if it's provided AND not "Any"
+    if (propertyType && propertyType !== "Any") {
+      propertyQuery += ` AND property_type = $${paramCount}`;
+      queryParams.push(propertyType);
+    }
+
+    // Execute the query
+    const propertyResult = await pool.query(propertyQuery, queryParams);
+
+    // If no properties match, return an empty array
+    if (propertyResult.rows.length === 0) {
+      return res.status(200).json({
+        properties: [],
+        message: "No properties match the given criteria.",
+      });
+    }
+
+    // Generate signed URLs for each property's images
+    const propertiesWithSignedUrls = await Promise.all(
+      propertyResult.rows.map(async (property) => {
+        const signedImageUrls = await generateSignedUrls(
+          property.image_urls || []
+        );
+        return {
+          ...property,
+          image_urls: signedImageUrls,
+        };
+      })
+    );
+
+    // Return the properties with signed URLs
+    return res.status(200).json({
+      properties: propertiesWithSignedUrls,
+      message: "Properties retrieved successfully.",
     });
   } catch (error) {
     console.error("Error fetching properties:", error);

@@ -10,7 +10,7 @@ CREATE TABLE user_details (
     user_address VARCHAR(255),
     address_zip_code VARCHAR(10),
     user_emergency_contact VARCHAR(255),
-    user_role VARCHAR(20) NOT NULl DEFAULT 'user';
+    user_role VARCHAR(20) NOT NULl DEFAULT 'user'
 );
 
 CREATE TABLE admin_host_messages (
@@ -41,8 +41,7 @@ CREATE TABLE property_listing_details (
     amenities JSONB,  
     image_urls TEXT[],  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE bookings (
