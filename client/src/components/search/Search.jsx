@@ -82,6 +82,7 @@ export default function SearchComponent() {
       if (!response.ok) {
         toast.error(data.message);
       }
+
       setFilteredData(data.properties);
       setSearchState(true);
     } catch (error) {

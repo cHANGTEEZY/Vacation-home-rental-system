@@ -1,10 +1,13 @@
+import "./PropertyOptions.css";
+
 import { useState } from "react";
 import { MapPin, DollarSign, Home, Star } from "lucide-react";
 import FilterIcon from "./FilterIcon";
 import StarRating from "../Rating Star/Star";
-import "./PropertyOptions.css";
 import { formatPrice } from "../../utils/formatPrice";
 import { variety } from "../../data/variety";
+import { toast } from "react-toastify";
+import { useFilteredData } from "../../context/FilteredDataContext";
 
 const filters = [
   { icon: Home, label: "Type" },
@@ -14,6 +17,8 @@ const filters = [
 ];
 
 const PropertyOptions = () => {
+  const { setFilteredData, setSearchState } = useFilteredData();
+
   const [activeFilter, setActiveFilter] = useState(null);
   const [price, setPrice] = useState([0, 100000]);
   const [type, setType] = useState("Tent");
@@ -53,10 +58,35 @@ const PropertyOptions = () => {
     setActiveFilter(null);
   };
 
-  const printFilter = () => {
-    alert(
-      `Distance: ${selectedDistanceOption}, Price: $${price[0]} - $${price[1]}, Type: ${type}, Rating: ${rating} stars`
-    );
+  const printFilter = async () => {
+    const formData = {
+      minPrice: price[0],
+      maxPrice: price[1],
+      propertyType: type,
+      rating,
+      distance: selectedDistanceOption,
+    };
+    console.log("Formdata is ", formData);
+    try {
+      const response = await fetch("http://localhost:3000/filter/options", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error(data.message);
+        return;
+      }
+      toast.info(data.message);
+      setFilteredData(data.properties);
+      setSearchState(true);
+    } catch (error) {
+      throw new Error("Something went wrong", error.message);
+    }
   };
 
   return (
@@ -89,7 +119,8 @@ const PropertyOptions = () => {
                   className={type === item.filterTitle ? "selected" : ""}
                 >
                   {item.filterTitle !== "Hotel" &&
-                  item.filterTitle !== "Cottage" ? (
+                  item.filterTitle !== "Cottage" &&
+                  item.filterTitle !== "Any" ? (
                     <span>
                       <item.filterIcon /> {item.filterTitle}
                     </span>
@@ -140,6 +171,7 @@ const PropertyOptions = () => {
             />
             <div className="range-values">
               <span>Rs{formatPrice(price[0])} </span>
+              <span>Rs{formatPrice(price[1])} </span>
             </div>
             <button onClick={handlePriceSelect} className="price-apply">
               Apply Price
