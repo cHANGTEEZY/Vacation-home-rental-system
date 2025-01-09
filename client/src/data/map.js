@@ -1,9 +1,9 @@
-import world from "../assets/images/Region/world.jpg";
-import europe from "../assets/images/Region/europe.jpg";
-import thailand from "../assets/images/Region/thailand.jpg";
-import sea from "../assets/images/Region/sea.jpg";
-import uk from "../assets/images/Region/uk.jpg";
-import usa from "../assets/images/Region/usa.jpg";
+import world from "../assets/images/Region/Global.jpg";
+import province1 from "../assets/images/Region/1.jpg";
+import province3 from "../assets/images/Region/3.jpg";
+import province4 from "../assets/images/Region/4.jpg";
+import province5 from "../assets/images/Region/5.jpg";
+import province6 from "../assets/images/Region/6.jpg";
 
 export const mapData = [
   {
@@ -12,22 +12,22 @@ export const mapData = [
   },
   {
     title: "Province 1",
-    image: europe,
+    image: province1,
   },
   {
     title: "Bagmati Pradesh",
-    image: thailand,
+    image: province3,
   },
   {
     title: "Gandaki Pradesh",
-    image: sea,
+    image: province4,
   },
   {
     title: "Lumbini",
-    image: uk,
+    image: province5,
   },
   {
     title: "Sudurpaschim",
-    image: usa,
+    image: province6,
   },
 ];
