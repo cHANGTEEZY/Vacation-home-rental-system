@@ -27,6 +27,7 @@
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.2.0",
     "dayjs": "^1.11.12",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.424.0",
     "mapbox-gl": "^3.6.0",
     "mapbox-gl-geocoder": "^2.0.1",

@@ -1,93 +1,131 @@
-.variety-icon-div {
-  width: max-content;
-  /* border: 1px solid red; */
+.property-options {
+  width: 100%;
   margin: 0 auto;
-  /* display: flex; */
-  /* align-items: center; */
-  /* gap: 20px; */
+  font-family: var(--primary-font);
+  display: flex;
+  justify-content: center;
 }
 
-.bar::before {
+.filter-icons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid #b3adad;
+  padding: 16px 0;
+  width: 1000px;
+}
+
+.filter-icons .filter-icon {
+  margin-right: 16px; /* Spacing between icons */
+}
+
+.bar-seperator::after {
   content: "";
-  position: absolute;
-  height: 100%;
+  display: inline-block;
   width: 1px;
-  /* left: 50%; */
-  top: 0;
+  height: 80%;
+  background-color: #6a7385;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
-.icon-div {
-  text-align: center;
+.apply-filters,
+.price-apply {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all ease-in-out 200ms;
-  color: rgb(143, 143, 143);
-  font-family: Roboto, "Sans-serif";
-  white-space: nowrap;
-  margin: 10px 0;
-  position: relative;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.sliding-card {
-  border-right: 1px solid black;
+.apply-filters:hover {
+  background-color: #333333;
 }
 
-.icon-div.clicked {
-  color: rgb(57, 56, 56);
+/* Popup Dialog Styles */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.icon-div.clicked::before {
-  content: "";
-  width: 50%;
-  position: absolute;
-  z-index: 10;
-  /* width: 100%; */
-  height: 2px;
-  color: black;
-  bottom: -20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: black;
+.dialog-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.icon-div:not(.clicked):hover::before {
-  color: rgb(57, 56, 56);
-  content: "";
-  width: 50%;
-  position: absolute;
-  z-index: 10;
-  height: 2px;
-  color: rgb(186, 183, 183);
-  bottom: -20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgb(186, 183, 183);
+.dialog-box h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
-.sliding-card-title {
-  margin-top: 5px;
-  font-size: 14px;
+.distance-options,
+.type-options {
+  list-style-type: none;
+  padding: 0;
 }
 
-.slick-prev {
-  left: -2%;
-}
-.slick-next {
-  right: -3%;
-}
-
-.slick-prev,
-.slick-next {
-  background-color: black !important;
-  width: 30px;
-  height: 30px;
-  z-index: 1;
-  border-radius: 30%;
+.distance-options li,
+.type-options li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.slick-prev:hover,
-.slick-prev:focus,
-.slick-next:hover,
-.slick-next:focus {
-  background-color: black !important;
-  opacity: 0.8;
+.distance-options li:hover,
+.type-options li:hover {
+  background-color: #f1f1f1;
+}
+
+.price-range-slider {
+  width: 100%;
+}
+
+.range-values {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 1rem;
+}
+
+.selected {
+  background-color: #e0f7fa;
+}
+
+.selected:hover {
+  background-color: #b2ebf2;
+}
+
+.type-options {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* This will create 2 columns */
+  gap: 10px;
+  width: 100%;
+}
+
+.type-options li span {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
 }

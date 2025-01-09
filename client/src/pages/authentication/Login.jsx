@@ -6,12 +6,13 @@ import "./Authenticate.css";
 import logo from "../../assets/images/Logo/n.png";
 import { useNavigate, Link } from "react-router-dom";
 import formImage from "../../assets/images/Form/form.jpg";
+import Cookies from "js-cookie"; // Import js-cookie for handling cookies
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
+    isAdmin: false,
   });
 
   const redirect = useNavigate();
@@ -22,6 +23,13 @@ export default function Login() {
       [e.target.name]: e.target.value,
     });
   }
+
+  const handleCheckboxChange = () => {
+    setFormData({
+      ...formData,
+      isAdmin: !formData.isAdmin,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,8 +47,19 @@ export default function Login() {
       } else {
         const result = await response.json();
         toast.success(result.message);
-        localStorage.setItem("token", result.token);
-        redirect("/");
+
+        if (formData.isAdmin) {
+          Cookies.set("adminToken", result.token, {
+            domain: "localhost",
+            path: "/",
+            secure: true,
+            sameSite: "None",
+          });
+          window.location.href = "http://localhost:5174/dashboard";
+        } else {
+          localStorage.setItem("token", result.token);
+          redirect("/");
+        }
       }
     } catch (error) {
       console.error(error.message);
@@ -80,6 +99,16 @@ export default function Login() {
                   onChange={handleChange}
                   required
                 />
+              </div>
+              <div className="form-group form-padding">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={formData.isAdmin}
+                    onChange={handleCheckboxChange}
+                  />
+                  Are you an admin?
+                </label>
               </div>
 
               <div className="form-footer form-padding">

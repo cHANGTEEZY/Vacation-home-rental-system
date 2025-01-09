@@ -1,24 +1,26 @@
-import { House, Building, Sun, Umbrella } from "lucide-react";
+import { House, Building, Tent } from "lucide-react";
+import Hotel from "../assets/images/hotel.png";
+import Cottage from "../assets/images/cottage.png";
 
 export const variety = [
   {
     filterIcon: House,
-    filterTitle: "Home",
+    filterTitle: "House",
   },
   {
     filterIcon: Building,
     filterTitle: "Apartment",
   },
   {
-    filterIcon: House,
+    filterIcon: Hotel,
     filterTitle: "Hotel",
   },
   {
-    filterIcon: Sun,
+    filterIcon: Cottage,
     filterTitle: "Cottage",
   },
   {
-    filterIcon: House,
+    filterIcon: Tent,
     filterTitle: "Tent",
   },
 ];
