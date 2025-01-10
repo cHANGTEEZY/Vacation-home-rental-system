@@ -2,6 +2,7 @@ import express from "express";
 import { pool } from "../db.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import calculateDistance from "../utils/haverSine.js";
 
 const router = express.Router();
 
@@ -120,16 +121,22 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/options", async (req, res) => {
-  const { minPrice, maxPrice, propertyType } = req.body;
-  console.log("Property Type:", propertyType);
+  const {
+    minPrice,
+    maxPrice,
+    propertyType,
+    userLatitude,
+    userLongitude,
+    distance,
+  } = req.body;
+
+  console.log("User Coordinates:", userLatitude, userLongitude, distance);
 
   try {
-    // Base query for filtering properties
     let propertyQuery = `SELECT * FROM property_listing_details WHERE 1=1`;
     const queryParams = [];
     let paramCount = 1;
 
-    // Add price range filter if provided
     if (minPrice && maxPrice) {
       propertyQuery += ` AND price BETWEEN $${paramCount} AND $${
         paramCount + 1
@@ -138,16 +145,26 @@ router.post("/options", async (req, res) => {
       paramCount += 2;
     }
 
-    // Only add property type filter if it's provided AND not "Any"
     if (propertyType && propertyType !== "Any") {
       propertyQuery += ` AND property_type = $${paramCount}`;
       queryParams.push(propertyType);
+      paramCount += 1;
     }
 
-    // Execute the query
+    // Commented out rating filter as per request
+    // if (rating) {
+    //   propertyQuery += ` AND averate_review_rating >= $${paramCount}`;
+    //   queryParams.push(rating);
+    //   paramCount += 1;
+    // }
+
+    propertyQuery += ` ORDER BY averate_review_rating DESC`;
+
+    console.log("SQL Query:", propertyQuery);
+    console.log("Query Parameters:", queryParams);
+
     const propertyResult = await pool.query(propertyQuery, queryParams);
 
-    // If no properties match, return an empty array
     if (propertyResult.rows.length === 0) {
       return res.status(200).json({
         properties: [],
@@ -155,23 +172,65 @@ router.post("/options", async (req, res) => {
       });
     }
 
-    // Generate signed URLs for each property's images
-    const propertiesWithSignedUrls = await Promise.all(
+    let propertiesWithDetails = await Promise.all(
       propertyResult.rows.map(async (property) => {
+        let distance = null;
+        if (userLatitude && userLongitude) {
+          try {
+            distance = calculateDistance(
+              userLatitude,
+              userLongitude,
+              property.latitude,
+              property.longitude
+            );
+          } catch (error) {
+            console.error(
+              `Error calculating distance for property ${property.property_id}:`,
+              error
+            );
+          }
+        }
+
         const signedImageUrls = await generateSignedUrls(
           property.image_urls || []
         );
+
         return {
           ...property,
+          distance,
           image_urls: signedImageUrls,
         };
       })
     );
 
-    // Return the properties with signed URLs
+    console.log(
+      "Distances before sorting:",
+      propertiesWithDetails.map((p) => p.distance)
+    );
+
+    if (userLatitude && userLongitude) {
+      propertiesWithDetails.sort((a, b) => {
+        if (a.distance === null && b.distance === null) {
+          return b.averate_review_rating - a.averate_review_rating;
+        }
+        if (a.distance === null) return 1;
+        if (b.distance === null) return -1;
+
+        if (typeof a.distance === "string" || typeof b.distance === "string") {
+          const isFurthest = distance === "Furthest";
+          return isFurthest ? -1 : 1;
+        }
+
+        const distanceDiff = a.distance - b.distance;
+        return distance === "Furthest" ? -distanceDiff : distanceDiff;
+      });
+    }
+
     return res.status(200).json({
-      properties: propertiesWithSignedUrls,
+      properties: propertiesWithDetails,
       message: "Properties retrieved successfully.",
+      sortedBy:
+        userLatitude && userLongitude ? distance || "Nearest" : "Rating",
     });
   } catch (error) {
     console.error("Error fetching properties:", error);

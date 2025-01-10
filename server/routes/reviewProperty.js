@@ -32,11 +32,38 @@ router.post("/:propertyId", authenticateToken, async (req, res) => {
         "UPDATE reviews SET rating=$1, review_message=$2, review_date_time=NOW() WHERE user_id=$3 AND property_id=$4",
         [rating, message, userId, propertyId]
       );
+
+      const getRatings = await pool.query(
+        "SELECT rating FROM reviews WHERE property_id = $1",
+        [propertyId]
+      );
+
+      const allRatings = getRatings.rows.map((row) => row.rating);
+      const averageRating =
+        allRatings.reduce((sum, rating) => sum + rating, 0) /
+          allRatings.length || 0;
+      const insertRatingData = await pool.query(
+        "UPDATE property_listing_details SET averate_review_rating=$1 WHERE property_id=$2",
+        [averageRating, propertyId]
+      );
     } else {
       // Insert a new review if it doesn't exist
       result = await pool.query(
         "INSERT INTO reviews (user_id, property_id, rating, review_message) VALUES ($1, $2, $3, $4)",
         [userId, propertyId, rating, message]
+      );
+      const getRatings = await pool.query(
+        "SELECT rating FROM reviews WHERE property_id = $1",
+        [propertyId]
+      );
+
+      const allRatings = getRatings.rows.map((row) => row.rating);
+      const averageRating =
+        allRatings.reduce((sum, rating) => sum + rating, 0) /
+          allRatings.length || 0;
+      const insertRatingData = await pool.query(
+        "UPDATE property_listing_details SET averate_review_rating=$1 WHERE property_id=$2",
+        [averageRating, propertyId]
       );
     }
 

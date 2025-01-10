@@ -41,7 +41,8 @@ CREATE TABLE property_listing_details (
     amenities JSONB,  
     image_urls TEXT[],  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    averate_review_rating FLOAT NOT NUlL
 );
 
 CREATE TABLE bookings (

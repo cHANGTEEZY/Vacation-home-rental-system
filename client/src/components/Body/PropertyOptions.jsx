@@ -18,13 +18,14 @@ const filters = [
 
 const PropertyOptions = () => {
   const { setFilteredData, setSearchState } = useFilteredData();
-
   const [activeFilter, setActiveFilter] = useState(null);
   const [price, setPrice] = useState([0, 100000]);
   const [type, setType] = useState("Tent");
   const [rating, setRating] = useState(3);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [selectedDistanceOption, setSelectedDistanceOption] = useState(null);
+  const [userLatitude, setUserLatitude] = useState();
+  const [userLongitude, setUserLongitude] = useState();
 
   const handleFilterClick = (index) => {
     setActiveFilter(activeFilter === index ? null : index);
@@ -49,6 +50,14 @@ const PropertyOptions = () => {
 
   const handleDistanceOptionSelect = (option) => {
     setSelectedDistanceOption(option);
+    const locationData = navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const long = position.coords.longitude;
+        setUserLatitude(lat);
+        setUserLongitude(long);
+      }
+    );
     setDialogOpen(false);
     setActiveFilter(null);
   };
@@ -65,6 +74,8 @@ const PropertyOptions = () => {
       propertyType: type,
       rating,
       distance: selectedDistanceOption,
+      userLatitude,
+      userLongitude,
     };
     console.log("Formdata is ", formData);
     try {
