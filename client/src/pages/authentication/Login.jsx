@@ -90,6 +90,14 @@ export default function Login() {
                   required
                 />
               </div>
+              <div className="form-admin form-padding">
+                <label>Are you an admin?</label>
+                <input
+                  type="checkbox"
+                  checked={formData.isAdmin}
+                  onChange={handleCheckboxChange}
+                />
+              </div>
               <div className="form-group form-padding">
                 <label htmlFor="password">Password:</label>
                 <input
@@ -100,15 +108,11 @@ export default function Login() {
                   required
                 />
               </div>
-              <div className="form-group form-padding">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={formData.isAdmin}
-                    onChange={handleCheckboxChange}
-                  />
-                  Are you an admin?
-                </label>
+
+              <div className="form-forgot-password">
+                <span className="form-footer-span">
+                  <Link to={"/forgotPassword"}>Forgot Password?</Link>
+                </span>
               </div>
 
               <div className="form-footer form-padding">

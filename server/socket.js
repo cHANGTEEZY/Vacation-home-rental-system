@@ -17,7 +17,6 @@ export const configureSocket = (io, pool) => {
             [propertyId, hostId, senderId, chatMessage]
           );
 
-          // Emit the message to the specific host
           const savedMessage = newMessage.rows[0];
           io.emit(`message:${hostId}`, savedMessage);
 

@@ -44,6 +44,10 @@ router.post("/", async (req, res) => {
         .json("Admins must select the 'Are you an admin?' checkbox");
     }
 
+    if (user.user_role !== "admin" && isAdmin) {
+      return res.status(403).json("You are not authorized as an admin");
+    }
+
     // If the user is not an admin, proceed with the login
     const token = jwtGenerator(user.user_id);
     res.status(200).json({

@@ -18,6 +18,7 @@ import messageHost from "./routes/messageHost.js";
 import wishlist from "./routes/wishList.js";
 import visitedProperties from "./routes/visitedProperties.js";
 import filter from "./routes/filter.js";
+import forgotPassword from "./routes/forgetPassowrd.js";
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(express.json());
 
 app.use("/auth/register", register);
 app.use("/auth/login", login);
+app.use("/auth/forgot-password", forgotPassword);
 app.use("/account", userAcount);
 app.use("/account/update", userAccountUpdate);
 app.use("/account/update/password", userPasswordUpdate);
@@ -49,7 +51,6 @@ app.use("/wishlist", wishlist);
 app.use("/visited-properties", visitedProperties);
 app.use("/filter", filter);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Something went wrong!" });

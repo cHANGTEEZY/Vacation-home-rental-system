@@ -281,12 +281,11 @@ const Listing = () => {
                 id="region"
                 onChange={(e) => handleRegionChange(e.target.value)}
               >
-                <option value="global">Global</option>
-                <option value="province1">Province 1</option>
-                <option value="Bagmati">Bagmati Pradesh</option>
-                <option value="gandaki">Gandaki Pradesh</option>
-                <option value="lumbini">Lumbini</option>
-                <option value="sudurpaschim">Sudurpaschim</option>
+                <option value="Koshi">Koshi</option>
+                <option value="Bagmati">Bagmati </option>
+                <option value="Gandaki">Gandaki </option>
+                <option value="Lumbini">Lumbini</option>
+                <option value="Sudurpaschim">Sudurpaschim</option>
               </select>
             </div>
           </div>

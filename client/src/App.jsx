@@ -24,6 +24,8 @@ import GetRouteToDestination from "./components/Map/GetRouteToDestination";
 import Review from "./pages/Review/Review";
 import Message from "./pages/Messaging/Message";
 import VisitedPropertiesAndReviews from "./pages/userAccount/VisitedPropertiesAndReviews";
+import ForgotPassword from "./pages/authentication/ForgotPassword";
+import EnterOTP from "./pages/authentication/OTP";
 
 export default function App() {
   return (
@@ -35,6 +37,8 @@ export default function App() {
 
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route path="/enter-otp" element={<EnterOTP />} />
             <Route path="/property-detail" element={<PropertyDetails />} />
             <Route path="/account-settings" element={<Account />} />
             <Route

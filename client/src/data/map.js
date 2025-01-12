@@ -11,15 +11,15 @@ export const mapData = [
     image: world,
   },
   {
-    title: "Province 1",
+    title: "Koshi",
     image: province1,
   },
   {
-    title: "Bagmati Pradesh",
+    title: "Bagmati",
     image: province3,
   },
   {
-    title: "Gandaki Pradesh",
+    title: "Gandaki",
     image: province4,
   },
   {

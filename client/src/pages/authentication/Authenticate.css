@@ -132,3 +132,25 @@
     text-decoration: underline;
   }
 }
+
+.form-admin {
+  font-family: var(--primary-font);
+  display: flex;
+  font-weight: 500;
+  font-size: 0.8rem;
+  gap: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.form-forgot-password {
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}

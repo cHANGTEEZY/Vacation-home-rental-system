@@ -88,7 +88,6 @@ router.get("/", async (req, res) => {
         })
       );
 
-      // Send the listings with signed URLs to the client
       return res.status(200).json(listingData);
     }
 
@@ -193,7 +192,6 @@ router.get("/host-name/:propertyId", async (req, res) => {
 });
 
 //toget multiple propertyDetail
-
 router.get("/multiple/:propertyIds", async (req, res) => {
   const propertyIds = req.params.propertyIds
     .split(",")

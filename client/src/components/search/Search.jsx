@@ -14,6 +14,7 @@ export default function SearchComponent() {
   const { setFilteredData, setSearchState } = useFilteredData();
 
   const [locationName, setLocationName] = useState("");
+  console.log(locationName);
   const [clicked, setClicked] = useState(null);
   const [totalGuest, setTotalGuest] = useState(0);
   const [range, setRange] = useState([
