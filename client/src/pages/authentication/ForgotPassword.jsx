@@ -3,7 +3,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import logo from "../../assets/images/Logo/n.png";
 import formImage from "../../assets/images/Form/form.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 
@@ -12,11 +12,13 @@ import { toast } from "react-toastify";
 export default function ForgotPassword() {
   const emailRef = useRef();
 
+  const redirect = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
 
-    const response = await fetch("http://localhost:3000/check-email", {
+    const response = await fetch("http://localhost:3000/auth/forgot-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,9 +28,9 @@ export default function ForgotPassword() {
 
     const data = await response.json();
     if (response.ok) {
+      redirect("/enter-otp", { state: { email } });
     } else {
       toast.error(data.message);
-      return;
     }
   };
 
@@ -43,8 +45,8 @@ export default function ForgotPassword() {
                 <img src={logo} alt="Logo" />
               </div>
               <div className="form-header">
-                <h1>Welcome Back</h1>
-                <span>Please sign in to your account</span>
+                <h1>Welcome</h1>
+                <span>Please enter your email.</span>
               </div>
               <div className="form-group form-padding">
                 <label htmlFor="email">Email:</label>

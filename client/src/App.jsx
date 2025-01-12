@@ -25,7 +25,7 @@ import Review from "./pages/Review/Review";
 import Message from "./pages/Messaging/Message";
 import VisitedPropertiesAndReviews from "./pages/userAccount/VisitedPropertiesAndReviews";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
-import EnterOTP from "./pages/authentication/OTP";
+import OTP from "./pages/authentication/OTP";
 import Preferences from "./pages/userAccount/Preferences";
 
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-            <Route path="/enter-otp" element={<EnterOTP />} />
+            <Route path="/enter-otp" element={<OTP />} />
             <Route path="/property-detail" element={<PropertyDetails />} />
             <Route path="/account-settings" element={<Account />} />
             <Route
@@ -50,7 +50,10 @@ export default function App() {
               path="/account-settings/login-and-security"
               element={<LoginAndSecurity />}
             />
-             <Route path="/account-settings/preferences" element={<Preferences />} />
+            <Route
+              path="/account-settings/preferences"
+              element={<Preferences />}
+            />
             <Route path="/account-settings/messages" element={<Messages />} />
             <Route path="/account-settings/booking" element={<Booking />} />
             <Route path="/account-settings/nestify" element={<Hosting />} />
