@@ -18,6 +18,7 @@ import {
   BriefcaseMedical,
   Dumbbell,
   WashingMachine,
+  HandHeart
 } from "lucide-react";
 import beachHouse from "./Videos/beachhouse.svg";
 import nestifySetupPeople from "./images/nestifySetup.png";
@@ -61,6 +62,7 @@ export {
   Flame,
   IdCard,
   ShieldHalf,
+  HandHeart,
   House,
   Eye,
   TicketPlus,

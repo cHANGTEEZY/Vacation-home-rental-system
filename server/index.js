@@ -9,6 +9,7 @@ import userAccountUpdate from "./routes/userAccountUpdate.js";
 import userPasswordUpdate from "./routes/userPasswordUpdate.js";
 import createListing from "./routes/createListing.js";
 import getPropertyListings from "./routes/getPropertyListings.js";
+import userPreferences from "./routes/userPreferences.js";
 import paypalRoutes from "./routes/paymentPaypal.js";
 import handleBooking from "./routes/bookProperty.js";
 import getBookingDetails from "./routes/bookProperty.js";
@@ -50,6 +51,7 @@ app.use("/message-host", messageHost);
 app.use("/wishlist", wishlist);
 app.use("/visited-properties", visitedProperties);
 app.use("/filter", filter);
+app.use("/user-preferences", userPreferences);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

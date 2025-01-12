@@ -1,0 +1,143 @@
+.preferences-container {
+    width: 900px;
+    margin: 0 auto;
+    font-family: var(--primary-font);
+  }
+  
+  .preferences-header h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: rgb(34, 34, 34);
+  }
+  
+  .preferences-component-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgb(220, 218, 218);
+    gap: 1rem;
+  }
+
+  .preferences {
+    display: grid;
+    gap: 2.5rem;
+  }
+  
+  .preferences .preference-item {
+    border-bottom: 1px solid rgb(179, 177, 177);
+    padding-bottom: 2rem;
+  }
+  
+  .preferences .preference-item:last-child {
+    border-bottom: none;
+  }
+  
+  input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+  
+  input[type="radio"] + label {
+    font-size: 1rem;
+    color: rgb(50, 50, 50);
+    cursor: pointer;
+    margin-right: 1.5rem;
+  }
+  
+  input[type="radio"]:checked + label {
+    font-weight: 600;
+    color: rgb(34, 34, 34);
+  }
+  
+  input[type="radio"]:focus + label {
+    outline: 1px dotted rgb(99, 98, 98);
+  }
+  
+  .slider {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  /* Update Preferences.css */
+.preference-data .save-button {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.8rem 1.2rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.edit-preference-data .edit-button {
+  text-decoration: underline;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+}
+
+
+.preference-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  h3 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: rgb(34, 34, 34);
+    margin-bottom: 0.5rem;
+  }
+
+  span {
+    text-transform: capitalize;
+  }
+  .preference-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .editChange{
+    background-color: white;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 550;
+      font-size: 0.8rem;
+      color: rgb(57, 130, 136)
+  }
+  .cancelChange{
+    background-color: white;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 550;
+      font-size: 0.8rem;
+      color: red;
+  }
+
+}
+.makeChanges{
+  margin-top: 1rem;
+  display: block;
+  padding: 0.8rem 1.2rem;
+  background-color: rgb(34, 34, 34);
+  color: rgb(242, 242, 242);
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}

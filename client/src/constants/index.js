@@ -5,6 +5,7 @@ import {
   House,
   TicketPlus,
   MessageCircle,
+  HandHeart,
 } from "../assets/Index";
 
 const accountGrid = [
@@ -28,6 +29,15 @@ const accountGrid = [
   },
   {
     id: 3,
+    title: "Preferences",
+    description: "Add your preferences for customized recommendations",
+    icon: HandHeart,
+    iconSize: 38,
+    iconStrokeWidth: 1.3,
+    link: "preferences",
+  },
+  {
+    id: 4,
     title: "Messages",
     description: "Check messages from your host or client",
     icon: MessageCircle,
@@ -36,7 +46,7 @@ const accountGrid = [
     link: "messages",
   },
   {
-    id: 4,
+    id: 5,
     title: "Bookings",
     description:
       "Manage your upcoming and past bookings, and view details of your reservations.",
@@ -46,7 +56,7 @@ const accountGrid = [
     link: "booking",
   },
   {
-    id: 5,
+    id: 6,
     title: "Hosting",
     description:
       "Manage your listings, check your bookings, and connect with guests.",
@@ -56,7 +66,7 @@ const accountGrid = [
     link: "nestify",
   },
   {
-    id: 6,
+    id: 7,
     title: "Wishlists & Favourites",
     description: "Add properties you want to stay or was your favourite.",
     icon: Heart,
@@ -65,7 +75,7 @@ const accountGrid = [
     link: "wishlists",
   },
   {
-    id: 7,
+    id: 8,
     title: "Visited Properties & Reviews",
     description: "View your visited properties and Review it",
     icon: Heart,

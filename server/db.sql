@@ -98,3 +98,10 @@ CREATE TABLE visited_properties (
   property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
   CONSTRAINT unique_user_property UNIQUE (user_id, property_id)
 );
+CREATE TABLE preferences(
+    preference_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
+    prefered_property_type VARCHAR(50) NOT NULL,
+    prefered_property_region VARCHAR(50) NOT NULL,
+    prefered_price NUMERIC(10, 2) NOT NULL CHECK (prefered_price >= 0),
+)
