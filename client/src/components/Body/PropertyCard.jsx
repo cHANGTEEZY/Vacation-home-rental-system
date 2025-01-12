@@ -35,7 +35,6 @@ const PropertyCard = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("propertyDetails", JSON.stringify(data));
         setPropertyDetails(data);
       } else {
         console.log("Error retrieving details");
@@ -46,26 +45,13 @@ const PropertyCard = () => {
     }
   };
 
-  const checkCachedProperties = () => {
-    const cachedData = localStorage.getItem("propertyDetails");
-    if (cachedData) {
-      setPropertyDetails(JSON.parse(cachedData));
-    } else {
-      getProperties();
-    }
-  };
-
   useEffect(() => {
-    checkCachedProperties();
+    getProperties();
   }, []);
 
   const handleCardClick = (e, propertyId) => {
-    // Prevent default behavior for all clicks within the card
     e.preventDefault();
-
-    // Check if the click is on the carousel navigation buttons
     if (e.target.closest(".navigate-button")) {
-      // Do nothing for carousel navigation clicks
       return;
     }
 
