@@ -6,10 +6,31 @@ export default function ChatBox() {
   const [conversations, setConversations] = useState([]);
   const [activeChatId, setActiveChatId] = useState(null);
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  const getUserIdFromToken = (token) => {
+    if (!token) return null;
+    try {
+      const payload = token.split(".")[1];
+      const decoded = JSON.parse(atob(payload));
+      return decoded.userId;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    const getConversations = async () => {
+    const userId = getUserIdFromToken(token);
+    setUserId(userId);
+  }, [token]);
+
+  useEffect(() => {
+    const fetchConversations = async () => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch("http://localhost:3000/message-host", {
@@ -18,8 +39,7 @@ export default function ChatBox() {
           },
         });
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch conversations");
+          throw new Error("Failed to fetch conversations");
         }
         const data = await response.json();
         setConversations(data);
@@ -30,18 +50,76 @@ export default function ChatBox() {
         setIsLoading(false);
       }
     };
-    getConversations();
-  }, []);
+    fetchConversations();
+  }, [token]);
 
-  const handleConvClick = (id) => {
-    setActiveChatId(id);
+  useEffect(() => {
+    if (!activeChatId) return;
+
+    const fetchMessages = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(
+          `http://localhost:3000/message-host/${activeChatId}/messages`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch messages");
+        }
+        const data = await response.json();
+        setMessages(data);
+      } catch (error) {
+        console.error("Error fetching messages:", error.message);
+        alert("Something went wrong while fetching messages.");
+      }
+    };
+    fetchMessages();
+  }, [activeChatId, token]);
+
+  const handleConvClick = (chatId) => {
+    setActiveChatId(chatId);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!message.trim()) return;
-    console.log(`Message to send: ${message}`);
-    setMessage(""); // Clear the input after sending
+
+    if (!message.trim() || !userId || !activeConversation) return;
+
+    const [hostId, propertyId] = activeConversation.chatId.split("-");
+    const newMessage = {
+      property_id: propertyId, // Use split propertyId here
+      host_id: hostId,
+      sender_id: userId,
+      sent_message: message,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/message-host/${propertyId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ message }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      setMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("Failed to send message");
+    }
   };
 
   const activeConversation = conversations.find(
@@ -87,9 +165,15 @@ export default function ChatBox() {
         </div>
         <div className="message-list">
           {activeConversation ? (
-            <div>
-              <p>{activeConversation.lastMessage}</p>
-            </div>
+            messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`message ${msg.sender_id === userId ? 'sent' : 'received'}`}
+              >
+                <p>{msg.sent_message || msg.received_message}</p>
+                <small>{new Date(msg.created_at).toLocaleTimeString()}</small>
+              </div>
+            ))
           ) : (
             <p>Please select a conversation to view messages.</p>
           )}
@@ -97,11 +181,12 @@ export default function ChatBox() {
         <form className="message-input" onSubmit={handleSubmit}>
           <input
             type="text"
+            className="message-input"
             placeholder="Type a message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button type="submit">Send</button>
+          <button type="submit" className="send-button">Send</button>
         </form>
       </main>
     </div>

@@ -1,17 +1,17 @@
 CREATE DATABASE vacation_home_rental_db;
 
-CREATE TABLE user_details (
-    user_id SERIAL PRIMARY KEY,
-    user_name VARCHAR(255),
-    user_email VARCHAR(255) UNIQUE,
-    user_password VARCHAR(255),
-    password_update_date VARCHAR(10),
-    user_phone_number VARCHAR(20),
-    user_address VARCHAR(255),
-    address_zip_code VARCHAR(10),
-    user_emergency_contact VARCHAR(255),
-    user_role VARCHAR(20) NOT NULl DEFAULT 'user'
-);
+    CREATE TABLE user_details (
+        user_id SERIAL PRIMARY KEY,
+        user_name VARCHAR(255),
+        user_email VARCHAR(255) UNIQUE,
+        user_password VARCHAR(255),
+        password_update_date VARCHAR(10),
+        user_phone_number VARCHAR(20),
+        user_address VARCHAR(255),
+        address_zip_code VARCHAR(10),
+        user_emergency_contact VARCHAR(255),
+        user_role VARCHAR(20) NOT NULl DEFAULT 'user'
+    );
 
 CREATE TABLE admin_host_messages (
     admin_host_message_id SERIAL PRIMARY KEY, 

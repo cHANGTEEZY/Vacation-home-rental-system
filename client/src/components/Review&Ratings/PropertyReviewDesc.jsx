@@ -43,7 +43,7 @@ const PropertyReviewDesc = ({
             <p>Guest favourite</p>
             <img src={ratingWingRight} alt="" />
           </div>
-          <p>One of the most loved homes on Airbnb, according to guests</p>
+          <p>One of the most loved homes on Staynest, according to guests</p>
           <h4>{averageRating}</h4>
           <p>{totalReviews} reviews</p>
         </div>

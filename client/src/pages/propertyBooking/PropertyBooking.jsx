@@ -90,7 +90,7 @@ const PropertyBooking = () => {
     };
   }, []);
 
-  const totalStay = differenceInDays(range[0].endDate, range[0].startDate) + 1;
+  const totalStay = differenceInDays(range[0].endDate, range[0].startDate) ;
   const [showGuestPicker, setShowGuestPicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 

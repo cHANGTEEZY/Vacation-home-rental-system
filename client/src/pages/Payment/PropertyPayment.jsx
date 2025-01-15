@@ -39,7 +39,7 @@ const PropertyPayment = () => {
   const totalStay = differenceInDays(parsedEndDate, parsedStartDate);
   const cleaningFee = 100 * totalGuests;
   const serviceFee = 500 * totalStay;
-  const totalCost = cleaningFee + serviceFee + propertyPrice * (totalStay + 1);
+  const totalCost = cleaningFee + serviceFee + propertyPrice * (totalStay );
 
   const payLoad = {
     bookingStartDate: format(parsedStartDate, "yyyy-MM-dd"),
@@ -131,10 +131,10 @@ const PropertyPayment = () => {
               <div className="booking-total-cost-estimate">
                 <span>
                   <p className="cost-type">
-                    Rs {formatPrice(propertyPrice)} X {totalStay + 1} nights
+                    Rs {formatPrice(propertyPrice)} X {totalStay } nights
                   </p>
                   <p className="total-cost-for-type">
-                    Rs {formatPrice(propertyPrice * (totalStay + 1))}
+                    Rs {formatPrice(propertyPrice * (totalStay ))}
                   </p>
                 </span>
                 <span>

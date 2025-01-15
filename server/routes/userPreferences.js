@@ -41,7 +41,7 @@ router.post("/", authenticateToken, async (req, res) => {
         const { prefered_property_type, prefered_property_region, prefered_price } = req.body;
 
         if (!prefered_property_type || !prefered_property_region || !prefered_price) {
-            return res.status(400).json({ message: "All fields are required" });
+            return res.status(400).json({ message: "All fields (property type, region, and price) are required" });
         }
 
         const result = await pool.query(

@@ -20,6 +20,7 @@ import wishlist from "./routes/wishList.js";
 import visitedProperties from "./routes/visitedProperties.js";
 import filter from "./routes/filter.js";
 import forgotPassword from "./routes/forgetPassowrd.js";
+import userRecommendations from "./routes/Recommendation.js";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 
 app.use("/auth/register", register);
 app.use("/auth/login", login);
@@ -52,7 +54,7 @@ app.use("/wishlist", wishlist);
 app.use("/visited-properties", visitedProperties);
 app.use("/filter", filter);
 app.use("/user-preferences", userPreferences);
-
+app.use('/recommendedProperties', userRecommendations);
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Something went wrong!" });
