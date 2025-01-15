@@ -42,7 +42,7 @@ CREATE TABLE property_listing_details (
     image_urls TEXT[],  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    averate_review_rating FLOAT NOT NUlL
+    averate_review_rating FLOAT
 );
 
 CREATE TABLE bookings (

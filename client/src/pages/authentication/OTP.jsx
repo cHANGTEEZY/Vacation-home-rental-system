@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import formImage from "../../assets/images/Form/form.jpg";
+import logo from "../../assets/images/Logo/n.png";
+
 import "./Authenticate.css";
+import Footer from "../../components/Footer/Footer";
+import Header from "../../components/Header/Header";
 
 const OTP = () => {
   const [otp, setOtp] = useState("");
@@ -44,34 +49,52 @@ const OTP = () => {
 
   return (
     <div className="signup-container">
-      <h2>Verify OTP and Reset Password</h2>
-      <form onSubmit={handleSubmit} className="form">
-        <div className="form-group form-padding">
-          <label htmlFor="otp">Enter OTP:</label>
-          <input
-            type="text"
-            id="otp"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-          />
-        </div>
+      <Header showPropertyOptions={false} showSearch={false} />
+      <div className="signup-content">
+        <div className="form-wrapper">
+          <form onSubmit={handleSubmit} className="form">
+            <div>
+              <div className="form-logo">
+                <img src={logo} />
+              </div>
+              <div className="form-header">
+                <h1>Welcome</h1>
+                <span>Enter OTP and New Password</span>
+              </div>
+              <div className="form-group form-padding">
+                <label htmlFor="otp">Enter OTP:</label>
+                <input
+                  type="text"
+                  id="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                />
+              </div>
 
-        <div className="form-group form-padding">
-          <label htmlFor="newPassword">New Password:</label>
-          <input
-            type="password"
-            id="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
+              <div className="form-group form-padding">
+                <label htmlFor="newPassword">New Password:</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-footer">
+                <button type="submit" className="submit-button">
+                  Reset Password
+                </button>
+              </div>
+            </div>
+          </form>
+          <div className="form-side">
+            <img src={formImage} alt="form-image" />
+          </div>
         </div>
-
-        <button type="submit" className="submit-button">
-          Reset Password
-        </button>
-      </form>
+      </div>
+      <Footer />
     </div>
   );
 };

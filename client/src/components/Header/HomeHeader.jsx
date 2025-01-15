@@ -2,12 +2,11 @@ import "./Header.css";
 import "./HomeHeader.css";
 import ProjectLogo from "../../assets/images/Logo/StayNest.png";
 import { CircleUserRound, AlignJustify } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchComponent from "../search/Search";
 import PropertyOptions from "../Body/PropertyOptions";
 import { toast } from "react-toastify";
-import { useContext } from "react";
 import AuthenticateContext from "../../context/AuthenticateContext";
 
 export default function HomeHeader() {
@@ -19,7 +18,7 @@ export default function HomeHeader() {
 
   useEffect(() => {
     function handleScroll() {
-      setIsScrolled(window.scrollY > 0);
+      setIsScrolled(window.scrollY > 50);
     }
 
     window.addEventListener("scroll", handleScroll);
@@ -27,7 +26,6 @@ export default function HomeHeader() {
   }, []);
 
   const dropDownRef = useRef(null);
-
   const navigate = useNavigate();
 
   function handleNavigate(link) {
@@ -46,7 +44,6 @@ export default function HomeHeader() {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -62,6 +59,11 @@ export default function HomeHeader() {
     toast.info("Logged out");
     setIsAuthenticated(false);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, [setIsAuthenticated]);
 
   return (
     <header className={`${isScrolled ? "scrolled" : ""} `}>
@@ -129,7 +131,6 @@ export default function HomeHeader() {
                     </>
                   )}
                 </div>
-
                 <div className="account-management-bottom account-management">
                   <span
                     className="account-item"

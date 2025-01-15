@@ -58,7 +58,7 @@ export default function ForgotPassword() {
                   Submit
                 </button>
                 <span className="form-footer-span">
-                  <ArrowLeft />
+                  <ArrowLeft strokeWidth={2} />
                   <Link to={"/login"}>Back to Login</Link>
                 </span>
               </div>
