@@ -76,7 +76,7 @@ CREATE TABLE bookings (
     booking_end_date DATE NOT NULL,
     total_guests INT NOT NULL CHECK (total_guests > 0),
     total_price NUMERIC(10, 2) NOT NULL CHECK (total_price >= 0),
-    booking_status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    booking_status VARCHAR(20) NOT NULL DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT check_dates CHECK (booking_end_date >= booking_start_date)
@@ -102,10 +102,10 @@ CREATE TABLE messages (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE booked_properties (
     booked_property_id  SERIAL PRIMARY KEY,
     property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
+    booking_end_date DATE NOT NULL,
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
 );
 

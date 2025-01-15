@@ -12,18 +12,13 @@ import "slick-carousel/slick/slick-theme.css";
 import "./HostingSetup.css";
 
 import UpdateListingModal from "./UpdateListingModal";
-import { use } from "react";
 
 const HostingSetup = () => {
   const [name, setName] = useState("");
   const [listings, setListings] = useState(false);
   const [listingData, setListingData] = useState([]);
-  console.log("listing data", listingData);
-  const [bookingData, setBookingData] = useState([]);
-  console.log("booking data", bookingData);
+  const [bookings, setBookings] = useState([]);
   const [reserved, setReserved] = useState(false);
-  const [bookedProperties, setBookedProperties] = useState([]);
-  console.log("Booked properties are", bookedProperties);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
 
@@ -62,12 +57,13 @@ const HostingSetup = () => {
     }
   };
 
-  const getBookingDetails = async () => {
+  const fetchBookingsData = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
+
     try {
       const response = await fetch(
-        "http://localhost:3000/get-booking-details",
+        "http://localhost:3000/get-booking-details/get-booked-properties",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -75,25 +71,43 @@ const HostingSetup = () => {
         }
       );
 
-      const data = await response.json();
       if (response.ok) {
-        setBookingData(data.bookedPropertyDetail);
-        setReserved(true);
-      } else {
-        console.log(data.message);
+        const data = await response.json();
+        setBookings(data);
+        setReserved(data.length > 0);
       }
-    } catch (error) {
-      console.error(error.message);
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
     }
   };
 
-  const filterBookedProperties = () => {
-    const filteredProperties = listingData.filter((property) =>
-      bookingData.some(
-        (booking) => booking.property_id === property.property_id
-      )
-    );
-    setBookedProperties(filteredProperties);
+  useEffect(() => {
+    fetchBookingsData();
+  }, []);
+
+  const getBookedProperties = () => {
+    const bookedProperties = [];
+    console.log(bookedProperties);
+    listingData.forEach((property) => {
+      const propertyBookings = bookings.filter(
+        (booking) => booking.property_id === property.id
+      );
+
+      if (propertyBookings.length > 0) {
+        propertyBookings.forEach((booking) => {
+          bookedProperties.push({
+            ...property,
+            bookingStartDate: booking.booking_start_date,
+            bookingEndDate: booking.booking_end_date,
+            totalGuests: booking.total_guests,
+            bookingStatus: booking.booking_status,
+            bookingId: booking.booking_id,
+          });
+        });
+      }
+    });
+
+    return bookedProperties;
   };
 
   const checkCachedData = () => {
@@ -107,14 +121,7 @@ const HostingSetup = () => {
 
   useEffect(() => {
     checkCachedData();
-    getBookingDetails();
   }, []);
-
-  useEffect(() => {
-    if (listingData.length && bookingData.length) {
-      filterBookedProperties();
-    }
-  }, [listingData, bookingData]);
 
   // Slick settings for the carousel
   const sliderSettings = {
@@ -219,85 +226,55 @@ const HostingSetup = () => {
         <div className="hosting-status-description">
           <h2>Your reservations</h2>
           <div className="show-reservations">
-            {reserved ? (
-              bookedProperties.map((listing, index) => (
-                <div key={index} className="listing-card">
-                  <h1>Property {index + 1}</h1>
-
-                  <Slider {...sliderSettings}>
-                    {listing.imageUrls.map((image, imgIndex) => (
-                      <div key={imgIndex} className="listing-card-image">
-                        <img
-                          src={image}
-                          alt={`Property image ${imgIndex + 1}`}
-                        />
+            {reserved && bookings.length > 0 ? (
+              <div className="booking-cards-container">
+                {getBookedProperties().map((booking, index) => (
+                  <div key={`${booking.id}-${index}`} className="booking-card">
+                    <div className="booking-card-image">
+                      <img
+                        src={booking.imageUrls[0]}
+                        alt={booking.title}
+                        className="booking-property-image"
+                      />
+                    </div>
+                    <div className="booking-card-details">
+                      <h3>{booking.title}</h3>
+                      <p className="booking-location">
+                        {booking.approximateLocation}
+                      </p>
+                      <div className="booking-dates">
+                        <p>
+                          <span className="booking-label">Check-in:</span>
+                          {new Date(
+                            booking.bookingStartDate
+                          ).toLocaleDateString()}
+                        </p>
+                        <p>
+                          <span className="booking-label">Check-out:</span>
+                          {new Date(
+                            booking.bookingEndDate
+                          ).toLocaleDateString()}
+                        </p>
                       </div>
-                    ))}
-                  </Slider>
-                  <div className="listing-card-detail">
-                    <h3>{listing.title}</h3>
-                    <p>
-                      <span className="listing-card-detail-head">Type: </span>
-                      {listing.propertyType}
-                    </p>
-                    <p>
-                      <span className="listing-card-detail-head">Region: </span>
-                      {listing.propertyRegion}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Location:{" "}
-                      </span>
-                      {listing.approximateLocation}
-                    </p>
-                    <p>
-                      <span className="listing-card-detail-head">Price: </span>{" "}
-                      Rs {formatPrice(listing.price)} night
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Guest allowed:{" "}
-                      </span>{" "}
-                      {listing.guests}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Bedrooms:{" "}
-                      </span>{" "}
-                      {listing.bedrooms}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">Beds: </span>{" "}
-                      {listing.beds}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Bathroom:{" "}
-                      </span>
-                      {listing.bathrooms}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Kitchen:{" "}
-                      </span>
-                      {listing.kitchens}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Amenities:{" "}
-                      </span>
-                      {JSON.parse(listing.amenities).join(", ")}
-                    </p>
+                      <p>
+                        <span className="booking-label">Guests:</span>
+                        {booking.totalGuests}
+                      </p>
+                      <p>
+                        <span className="booking-label">Status:</span>
+                        <span
+                          className={`status-${booking.bookingStatus.toLowerCase()}`}
+                        >
+                          {booking.bookingStatus}
+                        </span>
+                      </p>
+                      <p className="booking-price">
+                        Rs {formatPrice(booking.price)} per night
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             ) : (
               <div className="nothing-to-do">
                 <div className="nothing-to-do-inner-div">

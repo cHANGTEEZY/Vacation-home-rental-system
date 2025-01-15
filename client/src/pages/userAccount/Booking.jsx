@@ -71,7 +71,7 @@ export default function Booking() {
       differenceInTime / (1000 * 60 * 60 * 24)
     );
 
-    if (differenceInDays >= 7) {
+    if (differenceInDays >= 1) {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
@@ -88,7 +88,7 @@ export default function Booking() {
           toast.success(data.message);
           setTimeout(() => {
             window.location.reload();
-          }, 2000);
+          }, 500);
         } else {
           toast.error(data.message);
         }

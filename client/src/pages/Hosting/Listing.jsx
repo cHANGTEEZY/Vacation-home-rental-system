@@ -24,6 +24,7 @@ const Listing = () => {
   const [images, setImages] = useState([]);
   const [realEstateSelected, setRealEstateSelected] = useState(null);
   const [amenities, setAmenities] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [listingData, setListingData] = useState({
     propertyImages: [],
     propertyType: "",
@@ -56,6 +57,8 @@ const Listing = () => {
     e.preventDefault();
     if (images.length < 5) {
       setImages([...images, null]);
+    } else {
+      toast.warning("Maximum 5 images allowed");
     }
   };
 
@@ -108,21 +111,54 @@ const Listing = () => {
     }));
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (isSubmitting) return;
 
-    if (
-      !listingData.propertyType ||
-      !listingData.location.latitude ||
-      !listingData.location.longitude ||
-      images.length === 0 ||
-      images.length < 5
-    ) {
-      toast.error("Please fill out all required fields.");
+    // Check if all images are actually uploaded (not just slots created)
+    const validImages = images.filter((img) => img !== null);
+
+    // Validation checks
+    const validationErrors = [];
+
+    if (validImages.length < 5) {
+      validationErrors.push("Please upload exactly 5 images");
+    }
+
+    if (!listingData.propertyType) {
+      validationErrors.push("Please select a property type");
+    }
+
+    if (!listingData.propertyRegion) {
+      validationErrors.push("Please select a region");
+    }
+
+    if (amenities.length === 0) {
+      validationErrors.push("Please select at least one amenity");
+    }
+
+    if (!listingData.location.latitude || !listingData.location.longitude) {
+      validationErrors.push("Please set the property location on the map");
+    }
+
+    // Check if all required property details are filled
+    const requiredDetails = propertyDetail.map((detail) => detail.title);
+    const missingDetails = requiredDetails.filter(
+      (detail) => !listingData.details[detail]
+    );
+
+    if (missingDetails.length > 0) {
+      validationErrors.push(
+        `Please fill in all required property details: ${missingDetails.join(
+          ", "
+        )}`
+      );
+    }
+
+    // If there are any validation errors, show them and return
+    if (validationErrors.length > 0) {
+      validationErrors.forEach((error) => toast.error(error));
       return;
     }
 
@@ -130,8 +166,8 @@ const Listing = () => {
 
     const formData = new FormData();
 
-    images.forEach((image) => {
-      if (image) formData.append("propertyImages", image);
+    validImages.forEach((image) => {
+      formData.append("propertyImages", image);
     });
 
     formData.append("propertyType", listingData.propertyType);
@@ -176,7 +212,8 @@ const Listing = () => {
             navigate("/account-settings/nestify/listings");
           }, 3000);
         } else {
-          toast.error("Error creating listing");
+          const errorData = await response.json();
+          toast.error(errorData.message || "Error creating listing");
         }
       } catch (err) {
         toast.error("Listing error: " + err.message);
@@ -185,6 +222,7 @@ const Listing = () => {
       }
     }
   };
+
   useEffect(() => {
     return () => {
       images.forEach((image) => {
@@ -202,9 +240,8 @@ const Listing = () => {
   }, []);
 
   const handleKeyPress = (e) => {
-    // Check if the key pressed is 'Enter'
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent form submission
+      e.preventDefault();
     }
   };
 
@@ -289,6 +326,7 @@ const Listing = () => {
             </div>
           </div>
 
+          {/* Region selection section */}
           <div className="listing-form-group">
             <div className="listing-form-header">
               <h2>Which region does your place locate at?</h2>
@@ -298,10 +336,12 @@ const Listing = () => {
                 name="region"
                 id="region"
                 onChange={(e) => handleRegionChange(e.target.value)}
+                value={listingData.propertyRegion}
               >
+                <option value="">Select a region</option>
                 <option value="Koshi">Koshi</option>
-                <option value="Bagmati">Bagmati </option>
-                <option value="Gandaki">Gandaki </option>
+                <option value="Bagmati">Bagmati</option>
+                <option value="Gandaki">Gandaki</option>
                 <option value="Lumbini">Lumbini</option>
                 <option value="Sudurpaschim">Sudurpaschim</option>
               </select>
@@ -317,13 +357,16 @@ const Listing = () => {
             <div className="property-features-detail-section">
               {propertyDetail.map((item) => (
                 <div key={item.id} className="property-feature-detail-div">
-                  <h3>{item.title}</h3>
+                  <h3>
+                    {item.title} <span className="required-asterisk">*</span>
+                  </h3>
                   <input
                     type={item.type}
                     placeholder={item.placeHolder}
                     onChange={(e) =>
                       handleInputChange(item.title, e.target.value)
                     }
+                    value={listingData.details[item.title] || ""}
                   />
                 </div>
               ))}
@@ -333,6 +376,7 @@ const Listing = () => {
             <h3 className="listing-detail-section-header">
               Tell guests what your place has to offer
             </h3>
+
             <div className="property-amenities-section">
               {propertyAmenities.map((item) => (
                 <div
@@ -367,7 +411,7 @@ const Listing = () => {
                 onChange={(e) =>
                   handleLocationChangeDebounced(
                     parseFloat(e.target.value),
-                    listingData.location.latitude
+                    listingData.location.longitude
                   )
                 }
               />
@@ -377,7 +421,7 @@ const Listing = () => {
                 value={listingData.location.longitude || ""}
                 onChange={(e) =>
                   handleLocationChangeDebounced(
-                    listingData.location.longitude,
+                    listingData.location.latitude,
                     parseFloat(e.target.value)
                   )
                 }
@@ -387,7 +431,9 @@ const Listing = () => {
 
           {/* Submit button */}
           <div className="listing-form-submit">
-            <button type="submit">Submit Listing</button>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Creating Listing..." : "Submit Listing"}
+            </button>
           </div>
         </form>
       </section>

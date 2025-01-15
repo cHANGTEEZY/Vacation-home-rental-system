@@ -15,9 +15,6 @@ router.post("/", authenticateToken, async (req, res) => {
     bookingStatus,
   } = req.body;
 
-  console.log(bookingStartDate);
-  console.log(bookingEndDate);
-
   const bookersId = req.userId.id;
 
   try {
@@ -45,6 +42,7 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
+//get all booked date and data
 router.get("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
 
@@ -73,6 +71,42 @@ router.get("/", authenticateToken, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+//get all booked property of host
+router.get("/get-booked-properties", authenticateToken, async (req, res) => {
+  const hostId = req.userId.id;
+  try {
+    const bookingsQuery = `
+            SELECT 
+                b.booking_id,
+                b.property_id,
+                b.booking_start_date,
+                b.booking_end_date,
+                b.total_guests,
+                b.total_price,
+                b.booking_status,
+                b.created_at,
+                p.title as property_title,
+                p.property_type,
+                p.approximate_location
+            FROM bookings b
+            JOIN property_listing_details p ON b.property_id = p.property_id
+            JOIN user_details u ON b.user_id = u.user_id
+            WHERE p.user_id = $1
+            ORDER BY b.booking_start_date DESC
+        `;
+
+    const { rows } = await pool.query(bookingsQuery, [hostId]);
+    console.log(rows);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error in getHostBookings:", error);
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 
