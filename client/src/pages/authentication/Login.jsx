@@ -55,7 +55,7 @@ export default function Login() {
             secure: true,
             sameSite: "None",
           });
-          window.location.href = "http://localhost:5174/dashboard";
+          window.location.href = "http://localhost:5174";
         } else {
           localStorage.setItem("token", result.token);
           redirect("/");

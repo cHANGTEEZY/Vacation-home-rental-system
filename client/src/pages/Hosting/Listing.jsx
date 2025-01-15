@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ImagePlus, Image, CircleX } from "lucide-react";
@@ -108,10 +108,13 @@ const Listing = () => {
     }));
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all required fields are filled
+    if (isSubmitting) return;
+
     if (
       !listingData.propertyType ||
       !listingData.location.latitude ||
@@ -123,15 +126,14 @@ const Listing = () => {
       return;
     }
 
-    // Create a new FormData object
+    setIsSubmitting(true);
+
     const formData = new FormData();
 
-    // Append images to formData
     images.forEach((image) => {
       if (image) formData.append("propertyImages", image);
     });
 
-    // Append the rest of the listing data
     formData.append("propertyType", listingData.propertyType);
     formData.append("location[latitude]", listingData.location.latitude);
     formData.append("location[longitude]", listingData.location.longitude);
@@ -140,6 +142,7 @@ const Listing = () => {
     formData.append("propertyRegion", listingData.propertyRegion);
 
     const token = localStorage.getItem("token");
+
     if (token) {
       try {
         const response = await fetch(
@@ -155,6 +158,20 @@ const Listing = () => {
 
         if (response.ok) {
           toast.success("Listing created successfully");
+
+          // Clear all states after successful submission
+          setImages([]);
+          setRealEstateSelected(null);
+          setAmenities([]);
+          setListingData({
+            propertyImages: [],
+            propertyType: "",
+            propertyRegion: "",
+            location: { latitude: null, longitude: null },
+            details: {},
+            amenities: [],
+          });
+
           setTimeout(() => {
             navigate("/account-settings/nestify/listings");
           }, 3000);
@@ -163,10 +180,11 @@ const Listing = () => {
         }
       } catch (err) {
         toast.error("Listing error: " + err.message);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
-
   useEffect(() => {
     return () => {
       images.forEach((image) => {

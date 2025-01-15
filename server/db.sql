@@ -17,9 +17,8 @@ CREATE TABLE admin_host_messages (
     admin_host_message_id SERIAL PRIMARY KEY, 
     admin_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE, 
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE, 
-    message_subject VARCHAR(255) NOT NULL, 
-    message_body TEXT NOT NULL, 
-    rejection_reason TEXT, 
+    rejected_property_id INT NOT NULL REFERENCES pending_property_listing_details(pending_property_id) ON DELETE CASCADE,
+    rejection_reason TEXT
 );
 
 CREATE TABLE property_listing_details (
@@ -43,6 +42,30 @@ CREATE TABLE property_listing_details (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     averate_review_rating FLOAT
+);
+
+CREATE TABLE pending_property_listing_details (
+    pending_property_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,  
+    property_type VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    property_region VARCHAR(50) NOT NULL,
+    approximate_location VARCHAR(255) NOT NULl,
+    latitude VARCHAR(255) NOT NULL,
+    longitude VARCHAR(255) NOT NULL,
+    price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),  
+    guests INT NOT NULL CHECK (guests >= 0),  
+    bedrooms INT NOT NULL CHECK (bedrooms >= 0), 
+    beds INT NOT NULL CHECK (beds >= 0),  
+    bathrooms INT NOT NULL CHECK (bathrooms >= 0),  
+    kitchens INT NOT NULL CHECK (kitchens >= 0),  
+    swimming_pool INT  NOT NULL CHECK (swimming_pool >= 0),  
+    amenities JSONB,  
+    image_urls TEXT[],  
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    averate_review_rating FLOAT,
+    property_status VARCHAR(50) DEFAULT 'Pending',
 );
 
 CREATE TABLE bookings (
@@ -104,5 +127,5 @@ CREATE TABLE preferences(
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
     prefered_property_type VARCHAR(50) NOT NULL,
     prefered_property_region VARCHAR(50) NOT NULL,
-    prefered_price NUMERIC(10, 2) NOT NULL CHECK (prefered_price >= 0),
+    prefered_price NUMERIC(10, 2) NOT NULL CHECK (prefered_price >= 0)
 )

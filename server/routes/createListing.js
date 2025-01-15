@@ -67,12 +67,12 @@ router.post(
       const uploadedImages = await Promise.all(uploadPromises);
 
       const query = `
-        INSERT INTO property_listing_details (
+        INSERT INTO pending_property_listing_details (
           user_id, property_type, title,approximate_location, latitude,longitude, price, guests, bedrooms, beds, bathrooms, kitchens, swimming_pool, amenities, image_urls,property_region
         ) VALUES (
           $1, $2, $3,$4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15,$16
         )
-        RETURNING property_id;
+        RETURNING pending_property_id;
       `;
 
       const values = [
@@ -112,6 +112,7 @@ router.post(
   }
 );
 
+//get listed properties
 router.get("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
 
@@ -193,6 +194,7 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+//delete listing
 router.delete("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
   const { id } = req.body;
@@ -243,6 +245,7 @@ router.delete("/", authenticateToken, async (req, res) => {
   }
 });
 
+//update listing
 router.put("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id; // Assuming userId is valid and is added by authenticateToken
   const {

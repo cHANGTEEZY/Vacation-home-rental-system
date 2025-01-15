@@ -50,7 +50,6 @@ const PropertyPayment = () => {
     totalCost: totalCost,
     bookingStatus: "Booked",
   };
-  console.log(payLoad.bookingStartDate);
 
   const handlePaymentSuccess = () => {
     setIsPaid(true);

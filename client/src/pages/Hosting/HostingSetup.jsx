@@ -15,7 +15,6 @@ import UpdateListingModal from "./UpdateListingModal";
 
 const HostingSetup = () => {
   const [name, setName] = useState("");
-  const [reserved, setIsReserverd] = useState(false);
   const [listings, setListings] = useState(false);
   const [listingData, setListingData] = useState([]);
 
@@ -46,12 +45,10 @@ const HostingSetup = () => {
       );
       console.log("Response status", response.status);
       const data = await response.json();
-      console.log(data);
 
       if (response.ok) {
         setListings(true);
         setListingData(data); // Save array of listings
-        console.log("success");
       } else {
         console.log("Error fetching listing data");
       }
@@ -171,21 +168,6 @@ const HostingSetup = () => {
               Create a Listing
             </button>
           </Link>
-        </div>
-        <div className="hosting-status-description">
-          <h2>Your reservations</h2>
-          <div className="show-reservations">
-            {reserved ? (
-              <div></div>
-            ) : (
-              <div className="nothing-to-do">
-                <div className="nothing-to-do-inner-div">
-                  <ClipboardCheck size={40} />
-                  <p>You don&apos;t have any properties booked.</p>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
 
         <div className="listing-status-description">
