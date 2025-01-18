@@ -26,21 +26,21 @@ export default function Preferences() {
     });
 
     const propertyTypeOptions = [
-        { value: "home", label: "Home" },
-        { value: "apartment", label: "Apartment" },
-        { value: "hotel", label: "Hotel" },
-        { value: "tent", label: "Tent" },
-        { value: "cottage", label: "Cottage" },
+        { value: "House", label: "House" },
+        { value: "Apartment", label: "Apartment" },
+        { value: "Hotel", label: "Hotel" },
+        { value: "Tent", label: "Tent" },
+        { value: "Cottage", label: "Cottage" },
     ];
 
     const propertyRegionOptions = [
-        { value: "koshi", label: "Koshi" },
-        { value: "bagmati", label: "Bagmati" },
-        { value: "sudurpaschim", label: "Sudurpaschim" },
-        { value: "lumbini", label: "Lumbini" },
-        { value: "gandaki", label: "Gandaki" },
-        { value: "madhesh", label: "Madhesh" },
-        { value: "karnali", label: "Karnali" },
+        { value: "Koshi", label: "Koshi" },
+        { value: "Bagmati", label: "Bagmati" },
+        { value: "Sudurpaschim", label: "Sudurpaschim" },
+        { value: "Lumbini", label: "Lumbini" },
+        { value: "Gandaki", label: "Gandaki" },
+        { value: "Madhesh", label: "Madhesh" },
+        { value: "Karnali", label: "Karnali" },
 
     ];
 

@@ -286,6 +286,8 @@ const Listing = () => {
                 <option value="Gandaki">Gandaki </option>
                 <option value="Lumbini">Lumbini</option>
                 <option value="Sudurpaschim">Sudurpaschim</option>
+                <option value="Madhesh">Madhesh</option>
+                <option value="Karnali">Karnali</option>
               </select>
             </div>
           </div>
