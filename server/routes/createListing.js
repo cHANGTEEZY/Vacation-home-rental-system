@@ -93,7 +93,6 @@ router.post(
         uploadedImages,
         propertyRegion,
       ];
-      console.log(values);
 
       const result = await pool.query(query, values);
 
@@ -112,7 +111,6 @@ router.post(
   }
 );
 
-//get listed properties
 router.get("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
 
@@ -198,6 +196,7 @@ router.get("/", authenticateToken, async (req, res) => {
 router.delete("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
   const { id } = req.body;
+  console.log(id);
 
   try {
     if (!userId || !id) {
@@ -205,7 +204,7 @@ router.delete("/", authenticateToken, async (req, res) => {
     }
 
     const result = await pool.query(
-      "SELECT image_urls FROM property_listing_details WHERE id=$1 AND user_id=$2",
+      "SELECT image_urls FROM property_listing_details WHERE property_id=$1 AND user_id=$2",
       [id, userId]
     );
 
@@ -231,7 +230,7 @@ router.delete("/", authenticateToken, async (req, res) => {
     await Promise.all(deleteImagePromises); // Wait for all images to be deleted
 
     await pool.query(
-      "DELETE FROM property_listing_details WHERE id=$1 AND user_id=$2",
+      "DELETE FROM property_listing_details WHERE property_id=$1 AND user_id=$2",
       [id, userId]
     );
 
@@ -249,7 +248,7 @@ router.delete("/", authenticateToken, async (req, res) => {
 router.put("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id; // Assuming userId is valid and is added by authenticateToken
   const {
-    id,
+    property_id,
     title,
     price,
     propertyType,
@@ -263,14 +262,14 @@ router.put("/", authenticateToken, async (req, res) => {
   } = req.body;
 
   // Validate incoming data (could be extended with more checks)
-  if (!id || !title || !price || !propertyType) {
+  if (!property_id || !title || !price || !propertyType) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
   try {
     const checkQuery =
-      "SELECT * FROM property_listing_details WHERE id = $1 AND user_id = $2";
-    const checkValues = [id, userId];
+      "SELECT * FROM property_listing_details WHERE property_id = $1 AND user_id = $2";
+    const checkValues = [property_id, userId];
     const checkResult = await pool.query(checkQuery, checkValues);
 
     if (checkResult.rowCount === 0) {
@@ -297,7 +296,7 @@ router.put("/", authenticateToken, async (req, res) => {
       bathrooms,
       kitchens,
       propertyRegion,
-      id,
+      property_id,
     ];
 
     const updateListingData = await pool.query(updateListingQuery, values);

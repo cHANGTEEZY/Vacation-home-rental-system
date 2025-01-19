@@ -12,7 +12,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "./HostingSetup.css";
 
 import UpdateListingModal from "./UpdateListingModal";
-import { use } from "react";
 
 const HostingSetup = () => {
   const [name, setName] = useState("");
@@ -320,7 +319,7 @@ const HostingSetup = () => {
 
                     <Trash
                       className="delete-listing"
-                      onClick={() => handleDelete(listing.id)}
+                      onClick={() => handleDelete(listing.property_id)}
                       size={35}
                     />
                     <Cog

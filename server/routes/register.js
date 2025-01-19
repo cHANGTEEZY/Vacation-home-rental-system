@@ -31,8 +31,7 @@ router.post("/", async (req, res) => {
       [username, email, hashedPassword]
     );
 
-    const token = jwtGenerator(newUser.rows[0].user_id);
-    res.status(201).json({ message: "Account created", token: token });
+    res.status(201).json({ message: "Account created" });
   } catch (error) {
     res.status(500).json({
       error: error.message,

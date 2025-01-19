@@ -27,7 +27,7 @@ const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
             <input
               id="id"
               name="id"
-              value={updatedListing.id}
+              value={updatedListing.property_id}
               onChange={handleChange}
               readOnly
             />

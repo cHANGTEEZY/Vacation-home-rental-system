@@ -105,6 +105,7 @@ CREATE TABLE messages (
 CREATE TABLE booked_properties (
     booked_property_id  SERIAL PRIMARY KEY,
     property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
+    booking_start_date DATE NOT NULL,
     booking_end_date DATE NOT NULL,
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE
 );

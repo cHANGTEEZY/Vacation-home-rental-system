@@ -60,8 +60,8 @@ export async function createOrder(cart) {
     purchase_units: [
       {
         amount: {
-          currency_code: "USD", // Change as needed
-          value: cart.amount.toString(), // Use amount from the cart
+          currency_code: "USD",
+          value: cart.amount.toString(),
         },
       },
     ],
