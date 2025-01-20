@@ -88,10 +88,10 @@ export default function Wishlists() {
 
         <div className="wishlists-grid">
           {wishlistProperties.map((property) => (
-            <div key={property.id} className="wishlist-item">
+            <div key={property.property_id} className="wishlist-item">
               <div className="wishlist-description-header">
                 <h1 className="wishlist-property-title">{property.title}</h1>
-                <button onClick={() => deleteWishList(property.id)}>
+                <button onClick={() => deleteWishList(property.property_id)}>
                   <Trash color="red" />
                 </button>
               </div>

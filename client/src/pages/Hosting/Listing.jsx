@@ -7,7 +7,8 @@ import {
   propertyAmenities,
   realEstateModels,
 } from "../../data/propertyDetail";
-import "./Listing.css";
+// import "./Listing.css";
+import "./ListingTest.css";
 import MapBox from "../../components/Map/MapBox";
 import logo from "../../assets/images/Logo/StayNest.png";
 
@@ -245,10 +246,14 @@ const Listing = () => {
     }
   };
 
+  const handleNavigate = (link) => {
+    navigate(link);
+  };
+
   return (
     <>
       <header className="listing-header">
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" onClick={() => handleNavigate("/")} />
         <button onClick={() => navigate("/account-settings/nestify/listings")}>
           Exit
         </button>
@@ -339,8 +344,10 @@ const Listing = () => {
                 value={listingData.propertyRegion}
               >
                 <option value="">Select a region</option>
-                <option value="Koshi">Koshi</option>
                 <option value="Bagmati">Bagmati</option>
+                <option value="Madhesh">Madhesh</option>
+                <option value="Koshi">Koshi</option>
+                <option value="Karnali">Karnali</option>
                 <option value="Gandaki">Gandaki</option>
                 <option value="Lumbini">Lumbini</option>
                 <option value="Sudurpaschim">Sudurpaschim</option>

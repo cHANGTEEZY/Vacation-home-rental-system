@@ -93,7 +93,7 @@ const PropertyPayment = () => {
   }, [isPaid]);
 
   if (loading) {
-    return <p>Processing payment...</p>; // You could add a spinner here
+    return <p>Processing payment...</p>;
   }
 
   return (

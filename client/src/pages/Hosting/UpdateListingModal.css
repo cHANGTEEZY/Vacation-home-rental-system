@@ -72,3 +72,114 @@
   background-color: #f44336;
   color: white;
 }
+
+/* Add these styles to your existing UpdateListingModal.css */
+
+.amenities-group {
+  margin-bottom: 1.5rem;
+}
+
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.amenity-item:hover {
+  background-color: #f5f5f5;
+}
+
+.amenity-item.selected {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.amenity-item svg {
+  flex-shrink: 0;
+}
+
+.selected-amenities {
+  margin-bottom: 1.5rem;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.amenity-tag {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.875rem;
+}
+
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .amenities-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .amenity-item {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+  .form-group select {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+}
+
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  appearance: none; /* Hides the default arrow in most browsers */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23999' d='M2 0L0 2h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.65em auto;
+  cursor: pointer;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25);
+  background-color: #fff;
+}
+
+.form-group select option {
+  padding: 0.5rem;
+  background-color: #fff;
+  color: #333;
+}
+
+.form-group select:hover {
+  border-color: #1976d2;
+}

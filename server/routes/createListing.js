@@ -34,15 +34,13 @@ const upload = multer({ storage });
 router.post(
   "/",
   authenticateToken,
-  upload.array("propertyImages", 5), // Allow up to 5 images
+  upload.array("propertyImages", 5),
   async (req, res) => {
     const { propertyType, location, amenities, propertyRegion } = req.body;
     const images = req.files;
     const { latitude, longitude } = location;
     const details = JSON.parse(req.body.details);
     const userId = req.userId.id;
-
-    console.log(propertyRegion);
 
     try {
       const uploadPromises = images.map(async (image) => {
@@ -192,6 +190,127 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/booked-properties", authenticateToken, async (req, res) => {
+  const userId = req.userId.id;
+  console.log("Hello");
+  try {
+    const query = `
+      SELECT 
+        b.booking_id,
+        b.booking_start_date,
+        b.booking_end_date,
+        b.total_guests,
+        b.total_price,
+        b.booking_status,
+        p.property_id,
+        p.property_type,
+        p.title,
+        p.approximate_location,
+        p.latitude,
+        p.longitude,
+        p.price,
+        p.guests,
+        p.bedrooms,
+        p.beds,
+        p.bathrooms,
+        p.kitchens,
+        p.swimming_pool,
+        p.amenities,
+        p.image_urls,
+        p.property_region
+      FROM bookings b
+      INNER JOIN property_listing_details p ON b.property_id = p.property_id
+      WHERE p.user_id = $1
+    `;
+
+    const data = await pool.query(query, [userId]);
+
+    if (data.rows.length > 0) {
+      // Map over bookings and generate signed URLs for property images
+      const bookedProperties = await Promise.all(
+        data.rows.map(async (booking) => {
+          const {
+            booking_id,
+            booking_start_date,
+            booking_end_date,
+            total_guests,
+            total_price,
+            booking_status,
+            property_id,
+            property_type,
+            title,
+            approximate_location,
+            latitude,
+            longitude,
+            price,
+            guests,
+            bedrooms,
+            beds,
+            bathrooms,
+            kitchens,
+            swimming_pool,
+            amenities,
+            image_urls,
+            property_region,
+          } = booking;
+
+          // Generate signed URLs for images
+          const signedImageUrls = await Promise.all(
+            image_urls.map(async (imageKey) => {
+              const getObjectParams = {
+                Bucket: bucketName,
+                Key: imageKey,
+              };
+              const command = new GetObjectCommand(getObjectParams);
+              return getSignedUrl(s3, command, { expiresIn: 3600 });
+            })
+          );
+
+          // Return structured data for the booked property
+          return {
+            bookingId: booking_id,
+            bookingStartDate: booking_start_date,
+            bookingEndDate: booking_end_date,
+            totalGuests: total_guests,
+            totalPrice: total_price,
+            bookingStatus: booking_status,
+            propertyDetails: {
+              propertyId: property_id,
+              propertyType: property_type,
+              title,
+              approximateLocation: approximate_location,
+              latitude,
+              longitude,
+              price,
+              guests,
+              bedrooms,
+              beds,
+              bathrooms,
+              kitchens,
+              swimmingPool: swimming_pool,
+              amenities,
+              imageUrls: signedImageUrls,
+              propertyRegion: property_region,
+            },
+          };
+        })
+      );
+
+      res.status(200).json(bookedProperties);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No booked properties found for this host." });
+    }
+  } catch (error) {
+    console.error("Error retrieving booked properties:", error);
+    res.status(500).json({
+      message: "An error occurred while retrieving booked properties",
+      error: error.message,
+    });
+  }
+});
+
 //delete listing
 router.delete("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
@@ -259,9 +378,9 @@ router.put("/", authenticateToken, async (req, res) => {
     bathrooms,
     kitchens,
     propertyRegion,
+    amenities,
   } = req.body;
 
-  // Validate incoming data (could be extended with more checks)
   if (!property_id || !title || !price || !propertyType) {
     return res.status(400).json({ message: "Missing required fields" });
   }
@@ -282,8 +401,8 @@ router.put("/", authenticateToken, async (req, res) => {
     const updateListingQuery = `
       UPDATE property_listing_details 
       SET title = $1, price = $2, property_type = $3, approximate_location = $4, 
-          guests = $5, beds = $6, bedrooms = $7, bathrooms = $8, kitchens = $9 , property_region=$10
-      WHERE property_id = $11
+          guests = $5, beds = $6, bedrooms = $7, bathrooms = $8, kitchens = $9 , property_region=$10,amenities=$11
+      WHERE property_id = $12
     `;
     const values = [
       title,
@@ -296,6 +415,7 @@ router.put("/", authenticateToken, async (req, res) => {
       bathrooms,
       kitchens,
       propertyRegion,
+      JSON.stringify(amenities),
       property_id,
     ];
 

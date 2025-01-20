@@ -1,0 +1,314 @@
+:root {
+  --primary-color: #000000;
+  --secondary-color: #ffffff;
+  --accent-color: #4a4a4a;
+  --border-color: #e0e0e0;
+  --hover-color: #f5f5f5;
+  --error-color: #ff4d4d;
+}
+
+/* Header Styles */
+.listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
+  font-family: var(--primary-font);
+}
+
+.listing-header img {
+  /* height: 40px; */
+  width: 130px;
+  cursor: pointer;
+}
+
+.listing-header button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: var(--primary-font);
+}
+
+.listing-header button:hover {
+  background-color: var(--accent-color);
+}
+
+/* Main Content Styles */
+.create-a-listing-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: var(--primary-font);
+}
+
+.create-listing-header h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.listing-form-group {
+  margin-bottom: 2rem;
+  font-family: var(--primary-font);
+}
+
+.listing-form-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Image Upload Styles */
+.listing-image-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.image-input {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 2px dashed var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.image-input img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-input input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.remove-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--accent-color);
+}
+
+.listing-image-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-image-input {
+  width: 200px;
+  height: 200px;
+  border: 2px dashed var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+}
+
+/* Property Type Styles */
+.listing-property-type-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.property-type-card {
+  width: 150px;
+  height: 150px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.property-type-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--hover-color);
+}
+
+.property-type-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.listing-selected {
+  border-color: var(--primary-color);
+  background-color: var(--hover-color);
+}
+
+/* Region Selection Styles */
+.property-region-section select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+/* Property Details Styles */
+.listing-detail-section-header {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.property-features-detail-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.property-feature-detail-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.property-feature-detail-div h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.property-feature-detail-div input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.required-asterisk {
+  color: var(--error-color);
+}
+
+/* Property Amenities Styles */
+.property-amenities-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.property-amenities-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  gap: 10px;
+}
+
+.property-amenities-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--hover-color);
+}
+
+.amenity-selected {
+  border-color: var(--primary-color);
+  background-color: var(--hover-color);
+}
+
+/* Map and Location Styles */
+.location-inputs {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.location-inputs input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+/* Submit Button Styles */
+.listing-form-submit {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.listing-form-submit button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.listing-form-submit button:hover {
+  background-color: var(--accent-color);
+}
+
+.listing-form-submit button:disabled {
+  background-color: var(--accent-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .create-a-listing-section {
+    padding: 1rem;
+  }
+
+  .listing-property-type-section,
+  .property-amenities-section {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .property-features-detail-section {
+    grid-template-columns: 1fr;
+  }
+
+  .location-inputs {
+    flex-direction: column;
+  }
+}

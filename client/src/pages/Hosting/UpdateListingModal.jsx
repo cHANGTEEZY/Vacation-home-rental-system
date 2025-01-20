@@ -1,12 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./UpdateListingModal.css";
+import { propertyAmenities } from "../../data/propertyDetail";
+import { mapData } from "../../data/map";
 
 const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
   const [updatedListing, setUpdatedListing] = useState(listing);
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
+
+  useEffect(() => {
+    const initialAmenities = Array.isArray(listing.amenities)
+      ? listing.amenities
+      : [];
+    setSelectedAmenities(initialAmenities);
+  }, [listing.amenities]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedListing((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAmenityToggle = (amenity) => {
+    setSelectedAmenities((prev) => {
+      const newSelection = prev.includes(amenity.title)
+        ? prev.filter((a) => a !== amenity.title)
+        : [...prev, amenity.title];
+
+      // Update the updatedListing state with the new amenities array
+      setUpdatedListing((prev) => ({
+        ...prev,
+        amenities: newSelection,
+      }));
+
+      return newSelection;
+    });
   };
 
   const handleSubmit = (e) => {
@@ -62,12 +88,19 @@ const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
           </div>
           <div className="form-group">
             <label htmlFor="propertyRegion">Property Region</label>
-            <input
+            <select
               id="propertyRegion"
               name="propertyRegion"
               value={updatedListing.propertyRegion}
               onChange={handleChange}
-            />
+              required
+            >
+              {mapData.map((region) => (
+                <option key={region.title} value={region.title}>
+                  {region.title}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="approximateLocation">Approximate Location</label>
@@ -128,15 +161,36 @@ const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
               onChange={handleChange}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="amenities">Amenities</label>
-            <input
-              type="text"
-              id="amenities"
-              name="amenities"
-              value={updatedListing.amenities}
-              onChange={handleChange}
-            />
+          <div className="form-group amenities-group">
+            <label>Amenities</label>
+            <div className="amenities-grid">
+              {propertyAmenities.map((amenity) => {
+                const Icon = amenity.icons;
+                const isSelected = selectedAmenities.includes(amenity.title);
+
+                return (
+                  <div
+                    key={amenity.id}
+                    className={`amenity-item ${isSelected ? "selected" : ""}`}
+                    onClick={() => handleAmenityToggle(amenity)}
+                  >
+                    <Icon size={20} />
+                    <span>{amenity.title}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="selected-amenities">
+            <label>Selected Amenities:</label>
+            <div className="selected-tags">
+              {selectedAmenities.map((amenity, index) => (
+                <span key={index} className="amenity-tag">
+                  {amenity}
+                </span>
+              ))}
+            </div>
           </div>
           <div className="form-actions">
             <button type="submit" className="save-button">

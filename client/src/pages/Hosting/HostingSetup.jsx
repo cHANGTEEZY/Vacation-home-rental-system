@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import getUserName from "../../utils/getUserName";
-import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { HousePlus, ClipboardCheck, Trash, Cog } from "lucide-react";
-import { formatPrice } from "../../utils/formatPrice";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HostingSetup.css";
 
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { HousePlus, ClipboardCheck, Trash, Cog } from "lucide-react";
+import { formatPrice } from "../../utils/formatPrice";
+
+import Slider from "react-slick";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import getUserName from "../../utils/getUserName";
 import UpdateListingModal from "./UpdateListingModal";
 
 const HostingSetup = () => {
   const [name, setName] = useState("");
   const [listings, setListings] = useState(false);
   const [listingData, setListingData] = useState([]);
-  console.log("listing data", listingData);
-  const [bookingData, setBookingData] = useState([]);
-  console.log("booking data", bookingData);
-  const [reserved, setReserved] = useState(false);
   const [bookedProperties, setBookedProperties] = useState([]);
-  console.log("Booked properties are", bookedProperties);
+  console.log(bookedProperties);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
 
@@ -52,7 +49,7 @@ const HostingSetup = () => {
 
       if (response.ok) {
         setListings(true);
-        setListingData(data); // Save array of listings
+        setListingData(data);
       } else {
         console.log("Error fetching listing data");
       }
@@ -61,39 +58,38 @@ const HostingSetup = () => {
     }
   };
 
-  const getBookingDetails = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    try {
-      const response = await fetch(
-        "http://localhost:3000/get-booking-details",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  useEffect(() => {
+    const fetchBookedProperties = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          "http://localhost:3000/become-a-host/listing/booked-properties",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setBookedProperties(data);
+        } else {
+          console.error(
+            "Failed to fetch booked properties:",
+            response.statusText
+          );
         }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        setBookingData(data.bookedPropertyDetail);
-        setReserved(true);
-      } else {
-        console.log(data.message);
+      } catch (error) {
+        console.error("Error fetching booked properties:", error);
       }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+    };
 
-  const filterBookedProperties = () => {
-    const filteredProperties = listingData.filter((property) =>
-      bookingData.some(
-        (booking) => booking.property_id === property.property_id
-      )
-    );
-    setBookedProperties(filteredProperties);
-  };
+    fetchBookedProperties();
+  }, []);
 
   const checkCachedData = () => {
     const cachedData = localStorage.getItem("cachedListings");
@@ -106,19 +102,13 @@ const HostingSetup = () => {
 
   useEffect(() => {
     checkCachedData();
-    getBookingDetails();
   }, []);
-
-  useEffect(() => {
-    if (listingData.length && bookingData.length) {
-      filterBookedProperties();
-    }
-  }, [listingData, bookingData]);
 
   // Slick settings for the carousel
   const sliderSettings = {
     dots: true,
     infinite: true,
+    arrows: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -218,81 +208,32 @@ const HostingSetup = () => {
         <div className="hosting-status-description">
           <h2>Your reservations</h2>
           <div className="show-reservations">
-            {reserved ? (
-              bookedProperties.map((listing, index) => (
-                <div key={index} className="listing-card">
-                  <h1>Property {index + 1}</h1>
-
-                  <Slider {...sliderSettings}>
-                    {listing.imageUrls.map((image, imgIndex) => (
-                      <div key={imgIndex} className="listing-card-image">
-                        <img
-                          src={image}
-                          alt={`Property image ${imgIndex + 1}`}
-                        />
-                      </div>
-                    ))}
-                  </Slider>
-                  <div className="listing-card-detail">
-                    <h3>{listing.title}</h3>
+            {bookedProperties.length > 0 ? (
+              bookedProperties.map((property) => (
+                <div key={property.bookingId}>
+                  <div className="booked-grid">
+                    {property.propertyDetails.imageUrls.map((image, index) => {
+                      return (
+                        <div
+                          className="property-image-div-grid-item"
+                          key={index}
+                        >
+                          <img src={image} alt="" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="host-booked-properties-details">
+                    <h3>{property.propertyDetails.title}</h3>
                     <p>
-                      <span className="listing-card-detail-head">Type: </span>
-                      {listing.propertyType}
+                      Booking Dates: {property.bookingStartDate} to{" "}
+                      {property.bookingEndDate}
                     </p>
+                    <p>Total Price: ${property.totalPrice}</p>
+                    <p>Guests: {property.totalGuests}</p>
+                    <p>Type: {property.propertyDetails.propertyType}</p>
                     <p>
-                      <span className="listing-card-detail-head">Region: </span>
-                      {listing.propertyRegion}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Location:{" "}
-                      </span>
-                      {listing.approximateLocation}
-                    </p>
-                    <p>
-                      <span className="listing-card-detail-head">Price: </span>{" "}
-                      Rs {formatPrice(listing.price)} night
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Guest allowed:{" "}
-                      </span>{" "}
-                      {listing.guests}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Bedrooms:{" "}
-                      </span>{" "}
-                      {listing.bedrooms}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">Beds: </span>{" "}
-                      {listing.beds}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Bathroom:{" "}
-                      </span>
-                      {listing.bathrooms}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Kitchen:{" "}
-                      </span>
-                      {listing.kitchens}
-                    </p>
-
-                    <p>
-                      <span className="listing-card-detail-head">
-                        Amenities:{" "}
-                      </span>
-                      {JSON.parse(listing.amenities).join(", ")}
+                      Location: {property.propertyDetails.approximateLocation}
                     </p>
                   </div>
                 </div>
@@ -400,7 +341,7 @@ const HostingSetup = () => {
                         <span className="listing-card-detail-head">
                           Amenities:{" "}
                         </span>
-                        {JSON.parse(listing.amenities).join(", ")}
+                        {listing.amenities + ""}
                       </p>
                     </div>
                   </div>

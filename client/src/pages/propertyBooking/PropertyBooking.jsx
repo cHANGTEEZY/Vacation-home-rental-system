@@ -39,7 +39,6 @@ import { toast } from "react-toastify";
 const PropertyBooking = () => {
   const { id } = useParams();
   const [propertyDetail, setPropertyDetail] = useState(null);
-
   const [totalGuests, setTotalGuests] = useState(1);
 
   const [range, setRange] = useState([
