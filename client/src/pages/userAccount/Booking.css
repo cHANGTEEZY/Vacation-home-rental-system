@@ -80,12 +80,13 @@
 
 .booked-property-div {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 20px;
   justify-content: space-between;
   align-items: start;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  padding-bottom: 4rem;
   border-bottom: 1px solid rgb(212, 211, 211);
 }
 
@@ -108,6 +109,23 @@
   flex-grow: 1;
   h2 {
     margin-bottom: 1rem;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  button {
+    width: 50%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    transition: all ease 200ms;
+    &:hover {
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
   }
 }
 

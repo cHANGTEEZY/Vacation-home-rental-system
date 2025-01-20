@@ -163,6 +163,7 @@ router.get("/:propertyId", async (req, res) => {
   }
 });
 
+//get  detail of single host
 router.get("/host-name/:propertyId", async (req, res) => {
   const propertyId = req.params.propertyId;
 
@@ -188,6 +189,57 @@ router.get("/host-name/:propertyId", async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+//get detail of multiple hosts
+router.get("/host-details/multiple/:propertyIds", async (req, res) => {
+  const propertyIds = req.params.propertyIds
+    .split(",")
+    .map((id) => parseInt(id, 10))
+    .filter((id) => !isNaN(id));
+
+  // Validate the property IDs
+  if (propertyIds.length === 0) {
+    return res.status(400).json({ message: "Invalid property ID(s)" });
+  }
+
+  try {
+    // Dynamically create placeholders for the SQL query
+    const placeholders = propertyIds
+      .map((_, index) => `$${index + 1}`)
+      .join(", ");
+    const query = `
+      SELECT DISTINCT 
+        user_details.user_name, 
+        user_details.user_phone_number, 
+        user_details.user_address, 
+        user_details.user_email,
+        property_listing_details.property_id
+      FROM user_details 
+      INNER JOIN property_listing_details 
+      ON user_details.user_id = property_listing_details.user_id 
+      WHERE property_listing_details.property_id IN (${placeholders})
+    `;
+
+    const data = await pool.query(query, propertyIds);
+
+    if (data.rows.length > 0) {
+      const hostDetails = data.rows.map((row) => ({
+        propertyId: row.property_id,
+        hostName: row.user_name,
+        hostPhoneNumber: row.user_phone_number,
+        hostAddress: row.user_address,
+        hostEmailAddress: row.user_email,
+      }));
+
+      res.status(200).json(hostDetails);
+    } else {
+      res.status(404).json({ message: "No host details found" });
+    }
+  } catch (error) {
+    console.error("Error fetching host details:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

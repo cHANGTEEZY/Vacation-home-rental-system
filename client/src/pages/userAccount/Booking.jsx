@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import "./Booking.css";
 import Breadcrumb from "../../components/ui/BreadCrumb/BreadCrumb";
 import Header from "../../components/Header/Header";
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import "./Booking.css";
 import { Trash } from "lucide-react";
+import HostDetails from "../../components/Host/HostDetails";
 
 export default function Booking() {
   const [bookingData, setBookingData] = useState([]);
-  const [propertyDetails, setPropertyDetails] = useState([]);
 
+  const [propertyDetails, setPropertyDetails] = useState([]);
+  console.log(propertyDetails);
   const navigate = useNavigate();
 
   const handleNavigate = (link) => {
@@ -93,7 +97,7 @@ export default function Booking() {
           toast.error(data.message);
         }
       } catch (error) {
-        throw new error();
+        throw new error("Something went wrong", error.message);
       }
     } else {
       toast.error("Booking cant be cancelled before 7 days");
@@ -174,7 +178,6 @@ export default function Booking() {
           ) : (
             <div className="booked-property-container">
               {propertyDetails.map((property, index) => {
-                // Find the corresponding booking for this property
                 const booking = bookingData.find(
                   (item) => item.propertyId === property.property_id
                 );
@@ -218,37 +221,42 @@ export default function Booking() {
                         ))}
                     </div>
                     <div className="property-details">
-                      <h2>{property.title}</h2>
-                      <p>
-                        Type: <span>{property.propertyType}</span>
-                      </p>
-                      <p>
-                        Location: <span>{property.approximateLocation}</span>
-                      </p>
-                      {booking && (
-                        <>
-                          <p>
-                            Check In:{" "}
-                            {new Date(
-                              booking.bookingStartDate
-                            ).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </p>
-                          <p>
-                            Check Out:{" "}
-                            {new Date(
-                              booking.bookingEndDate
-                            ).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </p>
-                        </>
-                      )}
+                      <div>
+                        <h2>{property.title}</h2>
+                        <p>
+                          Type: <span>{property.propertyType}</span>
+                        </p>
+                        <p>
+                          Location: <span>{property.approximateLocation}</span>
+                        </p>
+                        {booking && (
+                          <>
+                            <p>
+                              Check In:{" "}
+                              {new Date(
+                                booking.bookingStartDate
+                              ).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </p>
+                            <p>
+                              Check Out:{" "}
+                              {new Date(
+                                booking.bookingEndDate
+                              ).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="host-details-div">
+                      <HostDetails />
                     </div>
                   </div>
                 );

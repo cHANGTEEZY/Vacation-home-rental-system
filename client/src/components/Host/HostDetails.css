@@ -1,7 +1,6 @@
 .meet-your-host-div {
-  padding-bottom: 3rem;
+  /* padding-bottom: 3rem; */
   margin-bottom: 3rem;
-  border-bottom: 1px solid rgb(221, 217, 217);
   .meet-your-host-header {
     font-weight: 500;
   }

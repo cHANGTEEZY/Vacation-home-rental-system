@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { HousePlus, ClipboardCheck, Trash, Cog } from "lucide-react";
 import { formatPrice } from "../../utils/formatPrice";
+import { formatDate } from "../../utils/formatDate";
 
 import Slider from "react-slick";
 import Header from "../../components/Header/Header";
@@ -19,7 +20,6 @@ const HostingSetup = () => {
   const [listings, setListings] = useState(false);
   const [listingData, setListingData] = useState([]);
   const [bookedProperties, setBookedProperties] = useState([]);
-  console.log(bookedProperties);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
 
@@ -91,6 +91,8 @@ const HostingSetup = () => {
     fetchBookedProperties();
   }, []);
 
+  const sendMessage = (clientId) => {};
+
   const checkCachedData = () => {
     const cachedData = localStorage.getItem("cachedListings");
     if (cachedData) {
@@ -104,7 +106,6 @@ const HostingSetup = () => {
     checkCachedData();
   }, []);
 
-  // Slick settings for the carousel
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -226,15 +227,21 @@ const HostingSetup = () => {
                   <div className="host-booked-properties-details">
                     <h3>{property.propertyDetails.title}</h3>
                     <p>
-                      Booking Dates: {property.bookingStartDate} to{" "}
-                      {property.bookingEndDate}
+                      Booking Dates: {formatDate(property.bookingStartDate)} to{" "}
+                      {formatDate(property.bookingEndDate)}
                     </p>
-                    <p>Total Price: ${property.totalPrice}</p>
+                    <p>Total Price: Rs {formatPrice(property.totalPrice)}</p>
                     <p>Guests: {property.totalGuests}</p>
                     <p>Type: {property.propertyDetails.propertyType}</p>
                     <p>
                       Location: {property.propertyDetails.approximateLocation}
                     </p>
+                    <button
+                      onClick={() => sendMessage()}
+                      className="message-client-button"
+                    >
+                      Message Client
+                    </button>
                   </div>
                 </div>
               ))

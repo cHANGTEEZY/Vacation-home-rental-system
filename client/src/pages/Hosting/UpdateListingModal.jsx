@@ -25,7 +25,6 @@ const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
         ? prev.filter((a) => a !== amenity.title)
         : [...prev, amenity.title];
 
-      // Update the updatedListing state with the new amenities array
       setUpdatedListing((prev) => ({
         ...prev,
         amenities: newSelection,
