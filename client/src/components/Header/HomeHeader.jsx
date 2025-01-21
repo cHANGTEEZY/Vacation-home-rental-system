@@ -8,6 +8,7 @@ import SearchComponent from "../search/Search";
 import PropertyOptions from "../Body/PropertyOptions";
 import { toast } from "react-toastify";
 import AuthenticateContext from "../../context/AuthenticateContext";
+import BlurText from "../ui/BlurText/BlurText";
 
 export default function HomeHeader() {
   const { isAuthenticated, setIsAuthenticated } =
@@ -164,9 +165,17 @@ export default function HomeHeader() {
           </div>
         </div>
         <div className="header-hero">
-          <h1 className="hero-text deepshadow">
+          {/* <h1 className="hero-text deepshadow">
             Experience Best Nepal <br /> Has To Offer
-          </h1>
+          </h1> */}
+          <BlurText
+            text="Experience Best Nepal Has to Offer"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="hero-text"
+          />
+
           <div>
             <SearchComponent />
           </div>

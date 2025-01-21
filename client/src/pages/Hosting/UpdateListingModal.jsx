@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./UpdateListingModal.css";
 import { propertyAmenities } from "../../data/propertyDetail";
+import { realEstateModels } from "../../data/propertyDetail";
 import { mapData } from "../../data/map";
 
 const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
@@ -52,7 +53,9 @@ const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
             <input
               id="id"
               name="id"
-              value={updatedListing.property_id}
+              value={
+                updatedListing.property_id || updatedListing.pending_property_id
+              }
               onChange={handleChange}
               readOnly
             />
@@ -78,12 +81,18 @@ const UpdateListingModal = ({ listing, onClose, onSubmit }) => {
           </div>
           <div className="form-group">
             <label htmlFor="propertyType">Property Type</label>
-            <input
+            <select
               id="propertyType"
               name="propertyType"
               value={updatedListing.propertyType}
               onChange={handleChange}
-            />
+            >
+              {realEstateModels.map((model) => (
+                <option key={model.title} value={model.title}>
+                  {model.title}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="propertyRegion">Property Region</label>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CircleChevronRight, CircleChevronLeft, Heart } from "lucide-react";
+import { CircleChevronRight, CircleChevronLeft } from "lucide-react";
 import Carousel from "../ui/Carousel/Carousel";
 import { formatPrice } from "../../utils/formatPrice";
 import "./PropertyCard.css";
@@ -71,7 +71,6 @@ const PropertyCard = () => {
             className="card"
             onClick={(e) => handleCardClick(e, property.property_id)}
           >
-            <Heart className="favourite-button card-button" />
             <Carousel
               settings={settings}
               customArrows={{

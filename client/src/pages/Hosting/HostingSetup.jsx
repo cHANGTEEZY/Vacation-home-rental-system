@@ -2,29 +2,33 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HostingSetup.css";
 
+import ReservationsList from "./ReservationsList";
+import ListingsList from "./ShowListings";
+
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HousePlus, ClipboardCheck, Trash, Cog } from "lucide-react";
-import { formatPrice } from "../../utils/formatPrice";
-import { formatDate } from "../../utils/formatDate";
 
-import Slider from "react-slick";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import getUserName from "../../utils/getUserName";
 import UpdateListingModal from "./UpdateListingModal";
+import RejectedListing from "./RejectedListing";
 
 const HostingSetup = () => {
   const [name, setName] = useState("");
   const [listings, setListings] = useState(false);
   const [listingData, setListingData] = useState([]);
+  const [rejectedListings, setRejectedListings] = useState(false);
+  const [rejectedData, setRejectedData] = useState([]);
   const [bookedProperties, setBookedProperties] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
+  const [path, setPath] = useState("");
+  console.log("path is ", path)
 
+  const [listedButtonClicked, setListedButtonClicked] = useState("listed");
   const navigate = useNavigate();
-
   useEffect(() => {
     getUserName(setName, navigate);
   }, [navigate]);
@@ -58,6 +62,38 @@ const HostingSetup = () => {
     }
   };
 
+  const fetchRejectedListingData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/become-a-host/listing/rejected-properties",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Response status", response.status);
+      const data = await response.json();
+
+      if (response.ok) {
+        setRejectedListings(true);
+        setRejectedData(data);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchRejectedListingData();
+  }, []);
   useEffect(() => {
     const fetchBookedProperties = async () => {
       try {
@@ -91,7 +127,7 @@ const HostingSetup = () => {
     fetchBookedProperties();
   }, []);
 
-  const sendMessage = (clientId) => {};
+  const sendMessage = (clientId) => { };
 
   const checkCachedData = () => {
     const cachedData = localStorage.getItem("cachedListings");
@@ -106,6 +142,10 @@ const HostingSetup = () => {
     checkCachedData();
   }, []);
 
+  const handleListedButtonClick = (button) => {
+    setListedButtonClicked(button);
+  };
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -115,19 +155,25 @@ const HostingSetup = () => {
     slidesToScroll: 1,
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, deletePath) => {
     const confirmed = confirm("Do you want to delete this property.");
+
     if (!confirmed) {
-      return console.log("Cancelled");
+      return toast.success("Cancelled delete");
     }
+
     const token = localStorage.getItem("token");
     if (!token) {
       return;
     }
 
+    const listingPath = "http://localhost:3000/become-a-host/listing";
+    const pendingPath =
+      "http://localhost:3000/become-a-host/listing/pending-property";
+
     try {
       const response = await fetch(
-        "http://localhost:3000/become-a-host/listing",
+        path === "listingPath" ? listingPath : pendingPath,
         {
           method: "DELETE",
           headers: {
@@ -167,8 +213,12 @@ const HostingSetup = () => {
     }
 
     try {
+      const listingPath = "http://localhost:3000/become-a-host/listing";
+      const pendingPath =
+        "http://localhost:3000/become-a-host/listing/pending-property";
+
       const response = await fetch(
-        "http://localhost:3000/become-a-host/listing",
+        path === "listingPath" ? listingPath : pendingPath,
         {
           method: "PUT",
           headers: {
@@ -208,166 +258,48 @@ const HostingSetup = () => {
 
         <div className="hosting-status-description">
           <h2>Your reservations</h2>
-          <div className="show-reservations">
-            {bookedProperties.length > 0 ? (
-              bookedProperties.map((property) => (
-                <div key={property.bookingId}>
-                  <div className="booked-grid">
-                    {property.propertyDetails.imageUrls.map((image, index) => {
-                      return (
-                        <div
-                          className="property-image-div-grid-item"
-                          key={index}
-                        >
-                          <img src={image} alt="" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="host-booked-properties-details">
-                    <h3>{property.propertyDetails.title}</h3>
-                    <p>
-                      Booking Dates: {formatDate(property.bookingStartDate)} to{" "}
-                      {formatDate(property.bookingEndDate)}
-                    </p>
-                    <p>Total Price: Rs {formatPrice(property.totalPrice)}</p>
-                    <p>Guests: {property.totalGuests}</p>
-                    <p>Type: {property.propertyDetails.propertyType}</p>
-                    <p>
-                      Location: {property.propertyDetails.approximateLocation}
-                    </p>
-                    <button
-                      onClick={() => sendMessage()}
-                      className="message-client-button"
-                    >
-                      Message Client
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="nothing-to-do">
-                <div className="nothing-to-do-inner-div">
-                  <ClipboardCheck size={40} />
-                  <p>You don&apos;t have any properties booked.</p>
-                </div>
-              </div>
-            )}
-          </div>
+          <ReservationsList
+            bookedProperties={bookedProperties}
+            onMessageClient={sendMessage}
+          />
         </div>
 
         <div className="listing-status-description">
           <h2>Your listings</h2>
-          <div className="show-listings">
-            {listings && listingData.length > 0 ? (
-              <div className="listing-card-container">
-                {listingData.map((listing, index) => (
-                  <div key={index} className="listing-card">
-                    <h1>Property {index + 1}</h1>
-
-                    <Trash
-                      className="delete-listing"
-                      onClick={() => handleDelete(listing.property_id)}
-                      size={35}
-                    />
-                    <Cog
-                      className="update-listing"
-                      onClick={() => handleUpdate(listing)}
-                      size={35}
-                    />
-                    <Slider {...sliderSettings}>
-                      {listing.imageUrls.map((image, imgIndex) => (
-                        <div key={imgIndex} className="listing-card-image">
-                          <img
-                            src={image}
-                            alt={`Property image ${imgIndex + 1}`}
-                          />
-                        </div>
-                      ))}
-                    </Slider>
-                    <div className="listing-card-detail">
-                      <h3>{listing.title}</h3>
-                      <p>
-                        <span className="listing-card-detail-head">Type: </span>
-                        {listing.propertyType}
-                      </p>
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Region:{" "}
-                        </span>
-                        {listing.propertyRegion}
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Location:{" "}
-                        </span>
-                        {listing.approximateLocation}
-                      </p>
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Price:{" "}
-                        </span>{" "}
-                        Rs {formatPrice(listing.price)} night
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Guest allowed:{" "}
-                        </span>{" "}
-                        {listing.guests}
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Bedrooms:{" "}
-                        </span>{" "}
-                        {listing.bedrooms}
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">Beds: </span>{" "}
-                        {listing.beds}
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Bathroom:{" "}
-                        </span>
-                        {listing.bathrooms}
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Kitchen:{" "}
-                        </span>
-                        {listing.kitchens}
-                      </p>
-
-                      <p>
-                        <span className="listing-card-detail-head">
-                          Amenities:{" "}
-                        </span>
-                        {listing.amenities + ""}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="nothing-to-do">
-                <div className="nothing-to-do-inner-div">
-                  <HousePlus size={40} />
-                  <p>You don&apos;t have any listing created.</p>
-                  <Link to="/become-a-host">
-                    <button className="create-a-listing-button">
-                      Create now
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            )}
+          <div className="listing-buttons">
+            <button
+              onClick={() => handleListedButtonClick("listed")}
+              className={`${listedButtonClicked === "listed" ? "active" : ""}`}
+            >
+              Listed Properties
+            </button>
+            <button
+              onClick={() => handleListedButtonClick("rejected")}
+              className={`${listedButtonClicked === "rejected" ? "active" : ""
+                }`}
+            >
+              Rejected Properties
+            </button>
           </div>
+          {listedButtonClicked === "listed" ? (
+            <ListingsList
+              listings={listings}
+              listingData={listingData}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+              sliderSettings={sliderSettings}
+              setPath={setPath}
+            />
+          ) : (
+            <RejectedListing
+              rejectedListings={rejectedListings}
+              rejectedListingData={rejectedData}
+              sliderSettings={sliderSettings}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+              setPath={setPath}
+            />
+          )}
         </div>
       </section>
       {showUpdateModal && (

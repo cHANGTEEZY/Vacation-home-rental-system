@@ -21,6 +21,7 @@
     "@mui/x-date-pickers": "^7.13.0",
     "@mui/x-date-pickers-pro": "^7.13.0",
     "@paypal/react-paypal-js": "^8.7.0",
+    "@react-spring/web": "^9.7.5",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "crypto-js": "^4.2.0",

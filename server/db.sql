@@ -71,13 +71,12 @@ CREATE TABLE pending_property_listing_details (
 CREATE TABLE bookings (
     booking_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
-    -- host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
     property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     booking_start_date DATE NOT NULL,
     booking_end_date DATE NOT NULL,
     total_guests INT NOT NULL CHECK (total_guests > 0),
     total_price NUMERIC(10, 2) NOT NULL CHECK (total_price >= 0),
-    booking_status VARCHAR(20) NOT NULL DEFAULT 'confirmed',
+    booking_status VARCHAR(20) NOT NULL DEFAULT 'Booked',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT check_dates CHECK (booking_end_date >= booking_start_date)
