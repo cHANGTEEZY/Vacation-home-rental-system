@@ -20,6 +20,7 @@ import wishlist from "./routes/wishList.js";
 import visitedProperties from "./routes/visitedProperties.js";
 import filter from "./routes/filter.js";
 import forgotPassword from "./routes/forgetPassowrd.js";
+import userRecommendations from "./routes/Recommendations.js";
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/wishlist", wishlist);
 app.use("/visited-properties", visitedProperties);
 app.use("/filter", filter);
 app.use("/user-preferences", userPreferences);
+app.use("/recommendedProperties", userRecommendations);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

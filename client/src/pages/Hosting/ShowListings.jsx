@@ -20,14 +20,17 @@ const ListingsList = ({
               <h1>Property {index + 1}</h1>
               <Trash
                 className="delete-listing"
-                onClick={() => { onDelete(listing.property_id); setPath("listingPath") }}
+                onClick={() => {
+                  onDelete(listing.property_id);
+                  setPath("listingPath");
+                }}
                 size={35}
               />
               <Cog
                 className="update-listing"
                 onClick={() => {
                   setPath("listingPath");
-                  onUpdate(listing)
+                  onUpdate(listing);
                 }}
                 size={35}
               />

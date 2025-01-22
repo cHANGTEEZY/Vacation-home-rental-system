@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Breadcrumb from "../../components/ui/BreadCrumb/BreadCrumb";
-import { toast } from "react-toastify";
-import RadioButton from "../../components/ui/RadioButton/RadioButton";
 import "./Preferences.css";
 
-export default function Preferences() {
-  const [editClicked, setEditClicked] = useState({
-    property_type: false,
-    property_region: false,
-    price: false,
-  });
+const Preferences = () => {
+  const [isEditing, setIsEditing] = useState(false);
 
   const [preferences, setPreferences] = useState({
     prefered_property_type: "",
@@ -25,25 +20,27 @@ export default function Preferences() {
     prefered_price: "",
   });
 
-  // Constants for price slider
+  // Constants
   const MIN_PRICE = 1000;
   const MAX_PRICE = 100000;
   const STEP_PRICE = 1000;
 
   const propertyTypeOptions = [
-    { value: "home", label: "Home" },
-    { value: "apartment", label: "Apartment" },
-    { value: "hotel", label: "Hotel" },
-    { value: "tent", label: "Tent" },
-    { value: "villa", label: "Villa" },
+    { value: "House", label: "House" },
+    { value: "Apartment", label: "Apartment" },
+    { value: "Hotel", label: "Hotel" },
+    { value: "Tent", label: "Tent" },
+    { value: "Cottage", label: "Cottage" },
   ];
 
   const propertyRegionOptions = [
-    { value: "koshi", label: "Koshi" },
-    { value: "bagmati", label: "Bagmati" },
-    { value: "sudurpaschim", label: "Sudurpaschim" },
-    { value: "lumbini", label: "Lumbini" },
-    { value: "gandaki", label: "Gandaki" },
+    { value: "Koshi", label: "Koshi" },
+    { value: "Bagmati", label: "Bagmati" },
+    { value: "Sudurpaschim", label: "Sudurpaschim" },
+    { value: "Lumbini", label: "Lumbini" },
+    { value: "Gandaki", label: "Gandaki" },
+    { value: "Madhesh", label: "Madhesh" },
+    { value: "Karnali", label: "Karnali" },
   ];
 
   const getPreferences = async () => {
@@ -54,6 +51,7 @@ export default function Preferences() {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.status === 404) {
         setPreferences({
           prefered_property_type: "",
@@ -62,11 +60,12 @@ export default function Preferences() {
         });
         return;
       }
+
       if (!response.ok) {
         const errorResult = await response.json();
-        toast.error(errorResult.message);
-        return;
+        throw new Error(errorResult.message);
       }
+
       const data = await response.json();
       setPreferences({
         prefered_property_type: data.propertyType,
@@ -74,8 +73,8 @@ export default function Preferences() {
         prefered_price: data.price || MIN_PRICE.toString(),
       });
     } catch (error) {
-      console.error(error.message);
-      toast.error("Error fetching preferences.");
+      console.error(error);
+      toast.error("Error fetching preferences");
     }
   };
 
@@ -115,47 +114,32 @@ export default function Preferences() {
 
       if (!response.ok) {
         const result = await response.json();
-        toast.error(result.message);
-        return;
+        throw new Error(result.message);
       }
 
       const result = await response.json();
       toast.success(result.message);
       await getPreferences();
 
-      setEditClicked({
-        property_type: false,
-        property_region: false,
-        price: false,
+      // Reset edit state
+      setIsEditing(false);
+      setNewPreferences({
+        prefered_property_type: "",
+        prefered_property_region: "",
+        prefered_price: "",
       });
     } catch (error) {
       console.error("Error:", error);
-      toast.error("An error occurred while saving preferences.");
-    }
-  };
-
-  const handleClick = (field) => {
-    setEditClicked((prev) => ({ ...prev, [field]: !prev[field] }));
-
-    // Initialize new preference value when editing starts
-    if (field === "price" && !editClicked.price) {
-      setNewPreferences((prev) => ({
-        ...prev,
-        prefered_price: preferences.prefered_price || MIN_PRICE.toString(),
-      }));
+      toast.error("Error saving preferences");
     }
   };
 
   const handleCancel = () => {
-    setEditClicked({
-      property_type: false,
-      property_region: false,
-      price: false,
-    });
+    setIsEditing(false);
     setNewPreferences({
-      prefered_property_type: preferences.prefered_property_type,
-      prefered_property_region: preferences.prefered_property_region,
-      prefered_price: preferences.prefered_price,
+      prefered_property_type: "",
+      prefered_property_region: "",
+      prefered_price: "",
     });
   };
 
@@ -166,6 +150,32 @@ export default function Preferences() {
   useEffect(() => {
     getPreferences();
   }, []);
+
+  const RadioButton = ({ options, groupName, selectedValue, onChange }) => {
+    return (
+      <div className="radio-grid">
+        {options.map((option) => (
+          <div
+            key={option.value}
+            className="radio-option"
+            data-value={option.value}
+          >
+            <input
+              type="radio"
+              id={`${groupName}-${option.value}`}
+              name={groupName}
+              value={option.value}
+              checked={selectedValue === option.value}
+              onChange={() => onChange(option.value)}
+            />
+            <label htmlFor={`${groupName}-${option.value}`}>
+              {option.label}
+            </label>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -178,8 +188,9 @@ export default function Preferences() {
         <div className="preferences-component-container">
           <div className="preferences">
             {/* Property Type Section */}
-            {editClicked.property_type ? (
-              <div>
+            <div className="preference-item">
+              <h3>Preferred Property Type</h3>
+              {isEditing ? (
                 <RadioButton
                   options={propertyTypeOptions}
                   groupName="propertyType"
@@ -194,27 +205,19 @@ export default function Preferences() {
                     }))
                   }
                 />
-              </div>
-            ) : (
-              <div className="preference-item">
-                <h3>Preferred Property Type</h3>
+              ) : (
                 <div className="preference-detail">
                   <span>
                     {preferences.prefered_property_type || "Not Provided"}
                   </span>
-                  <button
-                    className="editChange"
-                    onClick={() => handleClick("property_type")}
-                  >
-                    Edit
-                  </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Property Region Section */}
-            {editClicked.property_region ? (
-              <div>
+            <div className="preference-item">
+              <h3>Preferred Property Region</h3>
+              {isEditing ? (
                 <RadioButton
                   options={propertyRegionOptions}
                   groupName="propertyRegion"
@@ -229,29 +232,20 @@ export default function Preferences() {
                     }))
                   }
                 />
-              </div>
-            ) : (
-              <div className="preference-item">
-                <h3>Preferred Property Region</h3>
+              ) : (
                 <div className="preference-detail">
                   <span>
                     {preferences.prefered_property_region || "Not Provided"}
                   </span>
-                  <button
-                    className="editChange"
-                    onClick={() => handleClick("property_region")}
-                  >
-                    Edit
-                  </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
-            {/* Price Section with Slider */}
-            {editClicked.price ? (
-              <div className="preference-item">
-                <h3>Preferred Price</h3>
-                <div className="preference-detail price-slider-container">
+            {/* Price Section */}
+            <div className="preference-item">
+              <h3>Preferred Price</h3>
+              {isEditing ? (
+                <div className="price-slider-container">
                   <div className="slider-with-value">
                     <input
                       type="range"
@@ -277,40 +271,44 @@ export default function Preferences() {
                       )}
                     </span>
                   </div>
-                  <button className="cancelChange" onClick={handleCancel}>
-                    Cancel
-                  </button>
                 </div>
-              </div>
-            ) : (
-              <div className="preference-item">
-                <h3>Preferred Price</h3>
+              ) : (
                 <div className="preference-detail">
                   <span>
                     {preferences.prefered_price
                       ? formatPrice(preferences.prefered_price)
                       : "Not Provided"}
                   </span>
-                  <button
-                    className="editChange"
-                    onClick={() => handleClick("price")}
-                  >
-                    Edit
-                  </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="preference-actions">
+              {isEditing ? (
+                <>
+                  <button className="save-button" onClick={handleSave}>
+                    Save Changes
+                  </button>
+                  <button className="cancel-button" onClick={handleCancel}>
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="edit-button"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit Preferences
+                </button>
+              )}
+            </div>
           </div>
-          {(editClicked.property_type ||
-            editClicked.property_region ||
-            editClicked.price) && (
-            <button className="makeChanges" onClick={handleSave}>
-              Make Changes
-            </button>
-          )}
         </div>
       </section>
       <Footer />
     </>
   );
-}
+};
+
+export default Preferences;

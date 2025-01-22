@@ -393,6 +393,7 @@ router.get("/booked-properties", authenticateToken, async (req, res) => {
 //delete listing
 router.delete("/", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
+  console.log("Listing delete route");
   const { id } = req.body;
   console.log(id);
 
@@ -631,7 +632,9 @@ router.delete("/pending-property", authenticateToken, async (req, res) => {
       [id, userId]
     );
 
-    res.status(200).json({ message: "Listing deleted successfully" });
+    res
+      .status(200)
+      .json({ message: "Pending Proeprty listing deleted successfully" });
   } catch (error) {
     console.error("Error deleting listing or images:", error);
     res.status(500).json({

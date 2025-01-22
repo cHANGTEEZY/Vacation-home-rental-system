@@ -99,7 +99,7 @@ const PropertyCard = () => {
           </div>
         ))
       ) : (
-        <p>No properties available.</p>
+        <p className="listed-properties-error-msg">No properties available.</p>
       )}
     </>
   );

@@ -82,3 +82,7 @@
 .favourite-button:hover {
   transform: scale(1.2);
 }
+
+.listed-properties-error-msg {
+  font-family: var(--primary-font);
+}

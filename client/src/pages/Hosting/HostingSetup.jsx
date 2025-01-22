@@ -25,7 +25,7 @@ const HostingSetup = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
   const [path, setPath] = useState("");
-  console.log("path is ", path)
+  console.log("path is ", path);
 
   const [listedButtonClicked, setListedButtonClicked] = useState("listed");
   const navigate = useNavigate();
@@ -127,7 +127,7 @@ const HostingSetup = () => {
     fetchBookedProperties();
   }, []);
 
-  const sendMessage = (clientId) => { };
+  const sendMessage = (clientId) => {};
 
   const checkCachedData = () => {
     const cachedData = localStorage.getItem("cachedListings");
@@ -155,7 +155,7 @@ const HostingSetup = () => {
     slidesToScroll: 1,
   };
 
-  const handleDelete = async (id, deletePath) => {
+  const handleDelete = async (id) => {
     const confirmed = confirm("Do you want to delete this property.");
 
     if (!confirmed) {
@@ -275,8 +275,9 @@ const HostingSetup = () => {
             </button>
             <button
               onClick={() => handleListedButtonClick("rejected")}
-              className={`${listedButtonClicked === "rejected" ? "active" : ""
-                }`}
+              className={`${
+                listedButtonClicked === "rejected" ? "active" : ""
+              }`}
             >
               Rejected Properties
             </button>

@@ -13,13 +13,13 @@ CREATE TABLE user_details (
     user_role VARCHAR(20) NOT NULl DEFAULT 'user'
 );
 
-CREATE TABLE admin_host_messages (
-    admin_host_message_id SERIAL PRIMARY KEY, 
-    admin_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE, 
-    host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE, 
-    rejected_property_id INT NOT NULL REFERENCES pending_property_listing_details(pending_property_id) ON DELETE CASCADE,
-    rejection_reason TEXT
-);
+    CREATE TABLE admin_host_messages (
+        admin_host_message_id SERIAL PRIMARY KEY, 
+        admin_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE, 
+        host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE, 
+        rejected_property_id INT NOT NULL REFERENCES pending_property_listing_details(pending_property_id) ON DELETE CASCADE,
+        rejection_reason TEXT
+    );
 
 CREATE TABLE property_listing_details (
     property_id SERIAL PRIMARY KEY,

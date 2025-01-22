@@ -4,7 +4,6 @@ import Header from "../../components/Header/Header";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Trash } from "lucide-react";
 import HostDetails from "../../components/Host/HostDetails";
@@ -256,7 +255,7 @@ export default function Booking() {
                       </div>
                     </div>
                     <div className="host-details-div">
-                      <HostDetails />
+                      <HostDetails id={property.property_id} />
                     </div>
                   </div>
                 );
