@@ -8,7 +8,7 @@ import "./PropertyCard.css";
 const PropertyCard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
-  console.log(propertyDetails);
+  console.log("property details", propertyDetails);
   const redirect = useNavigate();
 
   const settings = {
@@ -91,7 +91,7 @@ const PropertyCard = () => {
             <div className="card-details">
               <h2>{property.title}</h2>
               <p>{property.approximateLocation}</p>
-              <p>{property.description}</p>
+              <p>{property.property_region}</p>
               <span>
                 <strong>Rs {formatPrice(property.price)}</strong> per night
               </span>

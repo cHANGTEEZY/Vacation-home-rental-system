@@ -61,7 +61,7 @@ const FilteredProperty = () => {
           ) : (
             <div className="filter-error-msg">
               No properties match your search criteria.
-            </div> // You can optionally show this instead of the toast here.
+            </div>
           )}
           <div className="filtered-property-grid">
             {filteredData.length > 0 &&

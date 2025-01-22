@@ -10,7 +10,7 @@
 
 .recommendations-grid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 

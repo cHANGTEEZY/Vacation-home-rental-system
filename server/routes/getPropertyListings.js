@@ -37,11 +37,9 @@ const generateSignedUrls = async (imageUrls) => {
 
 router.get("/", async (req, res) => {
   try {
-    // Fetch all property listings
     const data = await pool.query("SELECT * FROM property_listing_details");
 
     if (data.rows.length > 0) {
-      // Map over the listings and generate signed URLs for each
       const listingData = await Promise.all(
         data.rows.map(async (listing) => {
           const {
@@ -61,12 +59,11 @@ router.get("/", async (req, res) => {
             amenities,
             created_at,
             image_urls,
+            property_region,
           } = listing;
 
-          // Generate signed URLs for the images
           const signedImageUrls = await generateSignedUrls(image_urls);
 
-          // Return structured data including signed URLs
           return {
             property_id,
             propertyType: property_type,
@@ -84,6 +81,7 @@ router.get("/", async (req, res) => {
             amenities,
             createdAt: created_at,
             imageUrls: signedImageUrls,
+            property_region,
           };
         })
       );

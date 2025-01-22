@@ -27,7 +27,9 @@ const Home = () => {
           </div>
           <div className="recommended-properties">
             <h1 className="home-h-one">Recommended-Properties</h1>
-            <PropertyRecommendations />
+            <div className="recommended-property">
+              <PropertyRecommendations />
+            </div>
           </div>
           <div className="featured-properties">
             <FeaturedProperty />

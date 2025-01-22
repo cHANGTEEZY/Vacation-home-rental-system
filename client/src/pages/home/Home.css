@@ -13,7 +13,8 @@
 }
 
 .property-cards,
-.filtered-property-grid {
+.filtered-property-grid,
+.recommended-property-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;

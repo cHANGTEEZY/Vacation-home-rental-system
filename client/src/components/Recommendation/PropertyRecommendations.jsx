@@ -1,12 +1,13 @@
 import "./PropertyRecommendations.css";
 import Carousel from "../ui/Carousel/Carousel";
-import { CircleChevronRight, CircleChevronLeft, Heart } from "lucide-react";
+import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PropertyRecommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
+  console.log("recommendation", recommendations);
   const [preferences, setPreferences] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -168,14 +169,13 @@ const PropertyRecommendations = () => {
     <section className="recommendations-section">
       {recommendations.length > 0 ? (
         <>
-          <div className="recommendations-grid">
+          <div className="recommended-property-grid">
             {recommendations.map((property) => (
               <div
                 key={property.property_id}
                 className="card"
                 onClick={(e) => handleCardClick(e, property.property_id)}
               >
-                <Heart className="favourite-button card-button" />
                 <Carousel
                   settings={settings}
                   customArrows={{
@@ -199,8 +199,8 @@ const PropertyRecommendations = () => {
                 </Carousel>
                 <div className="card-details">
                   <h2>{property.title}</h2>
-                  <p>{property.approximateLocation}</p>
-                  <p>{property.description}</p>
+                  <p>{property.approximate_location}</p>
+                  <p>{property.property_region}</p>
                   <span>
                     <strong>{formatPrice(property.price)}</strong> per night
                   </span>

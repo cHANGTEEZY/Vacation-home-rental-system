@@ -122,6 +122,7 @@ const getUnviewedProperties = async (userId, limit) => {
             WHERE booking_status = 'Booked'
             AND booking_end_date >= CURRENT_DATE
             )
+        AND p.user_id != $1
         LIMIT $2`;
 
   const { rows } = await pool.query(query, [userId, limit]);
