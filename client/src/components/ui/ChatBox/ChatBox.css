@@ -1,14 +1,15 @@
 .messenger-container {
   display: flex;
   height: 100vh;
-  background-color: #f5f5f5;
+  background-color: hsl(0, 0%, 84%);
+  overflow: hidden;
 }
 
 .conversation-list {
   width: 300px;
   background-color: white;
   border-right: 1px solid #e0e0e0;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .conversation-header {
@@ -55,6 +56,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .chat-header {
@@ -68,7 +70,7 @@
   padding: 20px;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse; /* Stack messages from bottom */
 }
 
 .message {
@@ -109,6 +111,8 @@
   border-top: 1px solid #e0e0e0;
   display: flex;
   gap: 10px;
+  position: sticky;
+  bottom: 0;
 }
 
 .message-input input {
@@ -131,4 +135,94 @@
 
 .message-input button:hover {
   background-color: #0073e6;
+}
+
+.messenger-container {
+  display: flex;
+  height: 100vh;
+  background-color: hsl(0, 0%, 84%);
+}
+
+.conversation-list {
+  width: 300px;
+  background-color: white;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto;
+}
+
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.chat-header {
+  padding: 20px;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Message area with fixed height */
+.message-list {
+  height: 80vh;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  background-color: white;
+}
+
+/* Position the input at the bottom */
+.message-input {
+  padding: 20px;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  outline: none;
+}
+
+.message-input button {
+  padding: 10px 20px;
+  background-color: #0084ff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.message-input button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Message styles */
+.message {
+  max-width: 70%;
+  margin: 10px 0;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.message.sent {
+  align-self: flex-end;
+  background-color: #0084ff;
+  color: white;
+}
+
+.message.received {
+  align-self: flex-start;
+  background-color: #e9ecef;
+  color: black;
 }

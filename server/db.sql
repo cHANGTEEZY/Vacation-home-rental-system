@@ -96,8 +96,7 @@ CREATE TABLE messages (
     property_id INT NOT NULL REFERENCES property_listing_details(property_id) ON DELETE CASCADE,
     host_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
     sender_id INT NOT NULL REFERENCES user_details(user_id) ON DELETE CASCADE,
-    sent_message TEXT ,
-    received_message TEXT,
+    messages TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
