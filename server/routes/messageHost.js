@@ -177,6 +177,7 @@ router.post("/", authenticateToken, async (req, res) => {
       const result = await pool.query(updateMessageQuery, [
         senderMessage,
         chatId,
+        
       ]);
 
       if (result.rows.length > 0) {

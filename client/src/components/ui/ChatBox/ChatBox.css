@@ -139,7 +139,7 @@
 
 .messenger-container {
   display: flex;
-  height: 100vh;
+  height: 80vh;
   background-color: hsl(0, 0%, 84%);
 }
 
@@ -225,4 +225,12 @@
   align-self: flex-start;
   background-color: #e9ecef;
   color: black;
+}
+
+.start-message-bubble {
+  position: absolute;
+  left: 60%;
+  top: 60%;
+  font-size: 1.4rem;
+  transform: translate(-40%);
 }

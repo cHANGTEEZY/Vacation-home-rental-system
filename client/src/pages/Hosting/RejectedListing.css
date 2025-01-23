@@ -1,0 +1,64 @@
+.pending-propert-button-divs {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.submit-for-review,
+.admin-message-button {
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  transition: all ease 200ms;
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}
+
+p.pending-property-message {
+  color: red;
+  text-align: center;
+}
+
+.rejected-message-popup-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: var(--primary-font);
+}
+
+.rejected-message-popup-modal button {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background-color: #949ea8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.rejected-message-popup-modal button:hover {
+  background-color: #0056b3;
+}
+
+.rejected-modal-content {
+  background-color: rgb(255, 253, 253);
+  padding: 1rem;
+  border-radius: 1rem;
+  p {
+    color: red;
+  }
+}

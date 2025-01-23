@@ -644,4 +644,63 @@ router.delete("/pending-property", authenticateToken, async (req, res) => {
   }
 });
 
+//get rejected message
+router.get(
+  "/get-rejected-message/:propertyId",
+  authenticateToken,
+  async (req, res) => {
+    const userId = req.userId.id;
+    const { propertyId } = req.params;
+
+    try {
+      const query =
+        "SELECT rejection_reason, admin_host_message_id FROM admin_host_messages WHERE host_id=$1 AND rejected_property_id=$2";
+      const data = await pool.query(query, [userId, propertyId]);
+
+      if (data.rows.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No rejection message found for this property" });
+      }
+
+      console.log(data.rows[0].rejection_reason);
+      res.status(200).json({
+        message: data.rows[0].rejection_reason,
+        messageId: data.rows[0].admin_host_message_id,
+      });
+    } catch (error) {
+      console.error("Error fetching rejection message:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+);
+
+//submit for review
+router.post(
+  "/submit-review/:propertyId",
+  authenticateToken,
+  async (req, res) => {
+    const { propertyId } = req.params;
+    console.log(propertyId);
+    const userId = req.userId.id;
+    console.log(userId);
+
+    if (!userId) {
+      return res.status(400).json({ message: "Unauthorized" });
+    }
+
+    const query =
+      "UPDATE pending_property_listing_details SET property_status=$1 WHERE pending_property_id=$2 AND user_id=$3";
+
+    const data = await pool.query(query, ["Pending", propertyId, userId]);
+
+    if (data.rowCount === 0) {
+      return res
+        .status(400)
+        .json({ message: "Porperty of give id or userid not found" });
+    }
+    res.status(200).json({ message: "Property sent for review" });
+  }
+);
+
 export default router;

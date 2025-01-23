@@ -5,7 +5,7 @@ import "./ChatBox.css";
 
 const ChatBox = () => {
   const [senderId, setSenderId] = useState(null);
-  console.log("sender id is", senderId)
+  console.log("sender id is", senderId);
   const [conversations, setConversations] = useState([]);
   const [activeChatId, setActiveChatId] = useState(null);
   const [message, setMessage] = useState("");
@@ -77,7 +77,7 @@ const ChatBox = () => {
       message,
       hostId,
     };
-    console.log(payload)
+    console.log(payload);
 
     try {
       const response = await fetch(`${BASE_URL}/message-host`, {
@@ -95,16 +95,15 @@ const ChatBox = () => {
         throw new Error(data.message || "Failed to send message");
       }
 
-
       setConversations((prevConversations) =>
         prevConversations.map((conv) =>
           conv.chatId === activeChatId
             ? {
-              ...conv,
-              lastMessage: conv.lastMessage
-                ? `${conv.lastMessage}, ${senderId}/${message}`
-                : `${senderId}/${message}`,
-            }
+                ...conv,
+                lastMessage: conv.lastMessage
+                  ? `${conv.lastMessage}, ${senderId}/${message}`
+                  : `${senderId}/${message}`,
+              }
             : conv
         )
       );
@@ -138,8 +137,9 @@ const ChatBox = () => {
         {parseMessages(messages).map((message, index) => (
           <div
             key={index}
-            className={`message ${message.isSentByCurrentUser ? "sent" : "received"
-              }`}
+            className={`message ${
+              message.isSentByCurrentUser ? "sent" : "received"
+            }`}
           >
             <p>{message.content}</p>
           </div>
@@ -154,7 +154,6 @@ const ChatBox = () => {
 
   return (
     <div className="messenger-container">
-      {/* Conversation List */}
       <aside className="conversation-list">
         <div className="conversation-header">
           <h2>Conversations</h2>
@@ -168,14 +167,17 @@ const ChatBox = () => {
             conversations.map((conv) => (
               <div
                 key={conv.chatId}
-                className={`conversation-item ${conv.chatId === activeChatId ? "active" : ""
-                  }`}
+                className={`conversation-item ${
+                  conv.chatId === activeChatId ? "active" : ""
+                }`}
                 onClick={() => handleConvClick(conv.chatId, conv.hostId)}
               >
                 <CircleUserRound size={40} />
                 <div className="conversation-info">
                   <h3>{conv.name}</h3>
-                  <p>{conv.lastMessage?.split("/").pop() || "No messages yet"}</p>
+                  <p>
+                    {conv.lastMessage?.split("/").pop() || "No messages yet"}
+                  </p>
                 </div>
               </div>
             ))
@@ -185,7 +187,6 @@ const ChatBox = () => {
 
       {/* Chat Area */}
       <main className="chat-area">
-        {/* Chat Header */}
         <div className="chat-header">
           <h2>
             {activeConversation ? activeConversation.name : "Select a Chat"}
@@ -200,13 +201,14 @@ const ChatBox = () => {
               currentSenderId={senderId}
             />
           ) : (
-            <div className="message-bubble">
-              Select a conversation to start messaging
+            <div className="message-list">
+              <div className="start-message-bubble">
+                Select a conversation to start messaging
+              </div>
             </div>
           )}
         </div>
 
-        {/* Message Input */}
         <form onSubmit={handleSubmit} className="message-input">
           <input
             type="text"
