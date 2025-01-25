@@ -21,7 +21,7 @@ const Preferences = () => {
   });
 
   // Constants
-  const MIN_PRICE = 1000;
+  const MIN_PRICE = 10000;
   const MAX_PRICE = 100000;
   const STEP_PRICE = 1000;
 

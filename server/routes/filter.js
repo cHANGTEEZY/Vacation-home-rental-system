@@ -128,6 +128,7 @@ router.post("/options", async (req, res) => {
     userLatitude,
     userLongitude,
     distance,
+    rating,
   } = req.body;
 
   console.log("User Coordinates:", userLatitude, userLongitude, distance);
@@ -151,12 +152,11 @@ router.post("/options", async (req, res) => {
       paramCount += 1;
     }
 
-    // Commented out rating filter as per request
-    // if (rating) {
-    //   propertyQuery += ` AND averate_review_rating >= $${paramCount}`;
-    //   queryParams.push(rating);
-    //   paramCount += 1;
-    // }
+    if (rating) {
+      propertyQuery += ` AND averate_review_rating >= $${paramCount}`;
+      queryParams.push(rating);
+      paramCount += 1;
+    }
 
     propertyQuery += ` ORDER BY averate_review_rating DESC`;
 

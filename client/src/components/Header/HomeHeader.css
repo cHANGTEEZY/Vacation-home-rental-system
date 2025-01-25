@@ -1,8 +1,18 @@
 .home-header-border {
   position: relative;
   width: 100%;
-  height: 100vh;
-  background: url("../../assets/images/Hero/hero.avif") center/cover no-repeat;
+  height: 92vh;
+  background: url("../../assets/images/Hero/main.jpg") center/cover no-repeat;
+}
+
+.home-header-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #121212, rgba(0, 0, 0, 0));
 }
 
 .home-header-container {
@@ -13,11 +23,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 6rem;
+  background-color: white;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   z-index: 10;
+}
+
+.logo img {
+  width: 18vh;
+  height: auto;
 }
 
 .header-home-config ul {
@@ -38,7 +53,7 @@
 
 .header-hero {
   position: absolute;
-  bottom: 20%;
+  bottom: 2%;
   left: 0;
   right: 0;
   text-align: center;
@@ -46,31 +61,8 @@
 
 .hero-text {
   font-family: var(--primary-font);
-  color: black;
+  color: rgb(253, 252, 252);
   font-weight: 550;
   font-size: 3rem;
-}
-
-/* .deepshadow {
-  color: #fff;
-  letter-spacing: 0.1em;
-  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 2px 0 #2c2c2c, 0 3px 0 #2a2a2a,
-    0 4px 0 #282828, 0 5px 0 #262626, 0 6px 0 #242424, 0 7px 0 #222,
-    0 8px 0 #202020, 0 9px 0 #1e1e1e, 0 10px 0 #1c1c1c, 0 11px 0 #1a1a1a,
-    0 12px 0 #181818, 0 13px 0 #161616, 0 14px 0 #141414, 0 15px 0 #121212,
-    0 22px 30px rgba(0, 0, 0, 0.9);
-} */
-
-.variety-icons {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 1300px;
-  margin: 20px auto;
-  background-color: rgba(255, 255, 255, 0.8);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-  border-radius: 10px;
-  padding: 1rem;
+  text-shadow: 10px 10px 10px rgb(117, 106, 106);
 }

@@ -434,7 +434,7 @@ export default function PersonalInfo() {
               <Eye size={50} strokeWidth={1.2} color="green" />
               <h1>What info is shared with others?</h1>
               <p>
-                Airbnb only releases contact information for Hosts and guests
+                staynest only releases contact information for Hosts and guests
                 after a reservation is confirmed.
               </p>
             </div>

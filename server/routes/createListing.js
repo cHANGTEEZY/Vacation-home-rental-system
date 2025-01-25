@@ -271,7 +271,6 @@ router.get("/rejected-properties", authenticateToken, async (req, res) => {
 
 router.get("/booked-properties", authenticateToken, async (req, res) => {
   const userId = req.userId.id;
-  console.log("Hello");
   try {
     const query = `
       SELECT 

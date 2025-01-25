@@ -94,10 +94,10 @@ const nestifySetupDescription = [
   {
     title: "An experienced guest for your first booking",
     description:
-      "For your first booking, you can choose to welcome an experienced guest who has at least three stays and a good track record on Airbnb.",
+      "For your first booking, you can choose to welcome an experienced guest who has at least three stays and a good track record on staynest.",
   },
   {
-    title: "Specialized support from Airbnb",
+    title: "Specialized support from staynest",
     description:
       "New Hosts get one-tap access to specially trained Community Support agents who can help with everything from account issues to billing support.",
   },
@@ -121,7 +121,7 @@ const faqData = {
         "It's up to you but interacting with the guest is a good idea lol",
     },
     {
-      title: "Any tips on being a great Airbnb Host?",
+      title: "Any tips on being a great staynest Host?",
       content:
         "Getting the basics down goes a long way. Keep your place clean, respond to guests promptly, and provide necessary amenities, like fresh towels. ",
     },

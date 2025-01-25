@@ -12,9 +12,9 @@ const SCORE_WEIGHTS = {
   REGION: 0.3,
   TYPE: 0.3,
   PRICE_THRESHOLD: 10000,
-  MAX_RECOMMENDATIONS: 10,
+  MAX_RECOMMENDATIONS: 8,
   URL_EXPIRY: 3600,
-  SIMILAR_USERS_THRESHOLD: 0.3, // Similarity threshold
+  SIMILAR_USERS_THRESHOLD: 0.3,
 };
 
 // AWS setup with validation
@@ -215,7 +215,7 @@ const calculateHybridScore = (
   const adjustedHistoryWeight = Math.max(userHistoryWeight, 0.2);
   const contentWeight = Math.max(0, Math.min(1, 1 - adjustedHistoryWeight));
   console.log(
-    `User History Weight: ${userHistoryWeight}, Content Weight: ${contentWeight}`
+    `User History Weight: ${adjustedHistoryWeight}, Content Weight: ${contentWeight}`
   );
 
   return Number(
@@ -269,7 +269,7 @@ router.post("/recommendations", authenticateToken, async (req, res) => {
           ...property,
           image_urls: signedImageUrls,
           content_score: contentScore,
-          collaborative_score: collaborativeScore,
+          collaborative_score: collaborativeScore / 5,
           hybrid_score: hybridScore,
         };
       })

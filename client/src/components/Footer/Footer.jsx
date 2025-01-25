@@ -33,7 +33,7 @@ export default function Footer() {
                 <li>Join a free Hosting class</li>
               </ul>
             </div>
-            <div className="airbnb-footer">
+            <div className="staynest-footer">
               <ul>
                 <li>Nestify</li>
                 <li>Newsroom</li>

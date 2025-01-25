@@ -279,7 +279,7 @@ const HostingSetup = () => {
                 listedButtonClicked === "rejected" ? "active" : ""
               }`}
             >
-              Rejected Properties
+              Pending / Rejected Properties
             </button>
           </div>
           {listedButtonClicked === "listed" ? (

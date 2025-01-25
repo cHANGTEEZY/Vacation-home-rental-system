@@ -19,18 +19,20 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="listed-properties">
-            <h1 className="home-h-one">Listed-Properties</h1>
-            <div className="property-cards">
-              <PropertyCard />
-            </div>
-          </div>
           <div className="recommended-properties">
             <h1 className="home-h-one">Recommended-Properties</h1>
             <div className="recommended-property">
               <PropertyRecommendations />
             </div>
           </div>
+
+          <div className="listed-properties">
+            <h1 className="home-h-one">Listed-Properties</h1>
+            <div className="property-cards">
+              <PropertyCard />
+            </div>
+          </div>
+
           <div className="featured-properties">
             <FeaturedProperty />
           </div>
